@@ -60,6 +60,13 @@ public class ArmsLevel3 extends CommandBase {
     @Override
     public void execute() {
         m_arms.position(13,85);
+
+        if (m_arms.getElbowPosition() < 20) {
+            m_arms.position(0, 80);
+        }
+        else {
+            m_arms.position(13,80);
+        }
     }
 
     // Called once the command ends or is interrupted.

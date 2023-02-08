@@ -179,8 +179,8 @@ SwerveDriveOdometry m_odometry;
 
     int stall_limit_steer = 15;
     int free_limit_steer = 20;
-    int stall_limit_drive = 10;
-    int free_limit_drive = 38;
+    int stall_limit_drive = 25;
+    int free_limit_drive = 37;
   
     for(var module : modules){
       ((CANSparkMax)module.getDriveMotor()).setSmartCurrentLimit(stall_limit_drive,free_limit_drive);

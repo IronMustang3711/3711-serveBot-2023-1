@@ -70,12 +70,12 @@ public class Arms extends SubsystemBase {
     // Neo550 w/ 210:1
     elbow_motor = new CANSparkMax(ElbowID, MotorType.kBrushless);
     elbow_motor.restoreFactoryDefaults();
-   // elbow_motor.setSmartCurrentLimit(smartMotionSlot, smartMotionSlot, smartMotionSlot)
+    elbow_motor.setSmartCurrentLimit( 30, 40);
     pidElbow = elbow_motor.getPIDController();
     elbow_encoder = elbow_motor.getEncoder();
     // set PID coefficients
     pidElbow.setP(0.00015); // proportional for Neo 550 arm
-    pidElbow.setI(0);
+    pidElbow.setI(0.0000);
     pidElbow.setD(0);
     pidElbow.setIZone(0);
     pidElbow.setFF(0);
@@ -120,4 +120,14 @@ public class Arms extends SubsystemBase {
     arm_motor.set(armsSpeed);
     elbow_motor.set(elbowSpeed);
   }
+
+  public double getElbowPosition() {
+    return elbow_encoder.getPosition();
+  }
+
+  public double getArmPosition() {
+    return arm_encoder.getPosition();
+  }
+
+  
 }

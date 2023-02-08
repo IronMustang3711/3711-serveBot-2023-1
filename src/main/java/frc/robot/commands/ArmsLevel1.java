@@ -59,7 +59,7 @@ public class ArmsLevel1 extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        m_arms.position(15,30);
+        m_arms.position(10, 30);
     }
 
     // Called once the command ends or is interrupted.
