@@ -104,17 +104,7 @@ level2Btn.onTrue(new ArmsLevel2( m_arms ).withInterruptBehavior(InterruptionBeha
 
 final JoystickButton level1Btn = new JoystickButton(joystick, 10);        // lever 1 carpet
 level1Btn.onTrue(new ArmsLevel1( m_arms ).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
-
-final JoystickButton loadZoneBtn = new JoystickButton(joystick, 11);        // Substation // %r5
-loadZoneBtn.onTrue(new LoadZone( m_arms ).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
-                          
-final JoystickButton upBtn = new JoystickButton(joystick, 5);        
-upBtn.whileTrue(new RaiseClamp( m_arms ).withInterruptBehavior(InterruptionBehavior.kCancelSelf));  // %r5
                         
-final JoystickButton downBtn = new JoystickButton(joystick, 3);        
-downBtn.whileTrue(new LowerClamp( m_arms ).withInterruptBehavior(InterruptionBehavior.kCancelSelf));  // %r5
-                      
-
   }
 
   /**

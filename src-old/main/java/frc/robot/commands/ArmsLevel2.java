@@ -71,7 +71,7 @@ public class ArmsLevel2 extends CommandBase {
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-     // %r5   m_arms.drive(0,0);
+        m_arms.drive(0,0);
         
     }
 
