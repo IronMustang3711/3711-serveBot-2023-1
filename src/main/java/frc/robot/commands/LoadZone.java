@@ -61,7 +61,7 @@ public class LoadZone extends CommandBase {   // %r5
     public void execute() {
 
     //    if (m_arms.getElbowPosition() < 20) {
-    m_arms.position(0, 54);
+    m_arms.position(0, 36);
       //  }
      //   else {
        //     m_arms.position(2, 54);

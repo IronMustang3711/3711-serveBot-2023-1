@@ -67,7 +67,7 @@ public class LowerClamp extends CommandBase {
     public void execute() {
         // loop should execute 50/sec.  0.1*50 == 5 motor rev per second
         // 5 / 210 of a full clamp arm rotation with 210:1 gearbox.  %r5
-        elbowPosition -= 0.1;  
+        elbowPosition -= 0.15;  
         m_arms.position(armPosition, elbowPosition);
     }
 
