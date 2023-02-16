@@ -62,7 +62,7 @@ public class StowArms extends CommandBase {
         // m_arms.position(0,0);
 
         if (m_arms.getArmPosition() > 2) {
-            m_arms.position( 0,40);
+            m_arms.position( 0,30);
         }
         else {
             m_arms.position(0 ,0);

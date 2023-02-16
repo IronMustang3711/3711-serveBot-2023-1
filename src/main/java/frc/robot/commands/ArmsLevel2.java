@@ -61,10 +61,10 @@ public class ArmsLevel2 extends CommandBase {
     public void execute() {
 
         if (m_arms.getElbowPosition() < 20) {
-            m_arms.position(0, 54);
+            m_arms.position(0, 45);
         }
         else {
-            m_arms.position(6, 54);
+            m_arms.position(8, 45);
         }
     }
 
@@ -72,7 +72,7 @@ public class ArmsLevel2 extends CommandBase {
     @Override
     public void end(boolean interrupted) {
      // %r5   m_arms.drive(0,0);
-        
+    
     }
 
     // Returns true when the command should end.

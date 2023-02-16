@@ -82,9 +82,9 @@ public class Arms extends SubsystemBase {
     pidElbow.setOutputRange(-1, 1);
 
     // set Motion Magic
-    pidElbow.setSmartMotionMaxVelocity(9000, smartMotionSlot);
+    pidElbow.setSmartMotionMaxVelocity(10000, smartMotionSlot);
     pidElbow.setSmartMotionMinOutputVelocity(0, smartMotionSlot);
-    pidElbow.setSmartMotionMaxAccel(4000, smartMotionSlot);
+    pidElbow.setSmartMotionMaxAccel(10000, smartMotionSlot);
     pidElbow.setSmartMotionAllowedClosedLoopError(allowedErr, smartMotionSlot); // ?????????????
 
   }

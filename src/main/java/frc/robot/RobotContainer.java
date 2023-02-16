@@ -38,6 +38,7 @@ public class RobotContainer {
   private final Joystick m_controller_one = new Joystick(0);
   private final Joystick m_controller_two = new Joystick(1);
   private final Joystick joystick = new Joystick(2);  //%r
+  
 
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
@@ -99,14 +100,19 @@ stowBtn.onTrue(new StowArms( m_arms ).withInterruptBehavior(InterruptionBehavior
 final JoystickButton level3Btn = new JoystickButton(joystick, 8);     // level 3 upper   
 level3Btn.onTrue(new ArmsLevel3( m_arms ).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
-final JoystickButton level2Btn = new JoystickButton(joystick, 9);    // level 2 middle 
+final JoystickButton level2Btn = new JoystickButton(joystick, 10);    // level 2 middle 
 level2Btn.onTrue(new ArmsLevel2( m_arms ).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
-final JoystickButton level1Btn = new JoystickButton(joystick, 10);        // lever 1 carpet
+final JoystickButton level1Btn = new JoystickButton(joystick, 12);        // lever 1 carpet
 level1Btn.onTrue(new ArmsLevel1( m_arms ).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
+final JoystickButton GroundBtn = new JoystickButton(joystick, 9);        // lever 1 carpet
+GroundBtn.onTrue(new GroundPickup( m_arms ).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+
 final JoystickButton loadZoneBtn = new JoystickButton(joystick, 11);        // Substation // %r5
-loadZoneBtn.onTrue(new LoadZone( m_arms ).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+// test load sequence  loadZoneBtn.onTrue(new LoadZone( m_arms ).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+// open clamp and go to load position.
+loadZoneBtn.onTrue(new LoadSequence( m_arms,m_clamp ).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
                           
 final JoystickButton upBtn = new JoystickButton(joystick, 5);        
 upBtn.whileTrue(new RaiseClamp( m_arms ).withInterruptBehavior(InterruptionBehavior.kCancelSelf));  // %r5

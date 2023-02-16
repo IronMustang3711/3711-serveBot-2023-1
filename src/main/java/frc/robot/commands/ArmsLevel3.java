@@ -59,13 +59,13 @@ public class ArmsLevel3 extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        m_arms.position(13,85);
+        
 
         if (m_arms.getElbowPosition() < 20) {
-            m_arms.position(0, 80);
+            m_arms.position(0, 73);
         }
         else {
-            m_arms.position(13,80);
+            m_arms.position(13, 73);
         }
     }
 
