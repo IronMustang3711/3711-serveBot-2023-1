@@ -67,7 +67,9 @@ public class RobotContainer {
     m_clamp.setDefaultCommand(new ManualClamp( m_clamp ));
 
     // Configure autonomous sendable chooser
-    m_chooser.setDefaultOption("Autonomous Command", new AutonomousCommand());
+   // m_chooser.setDefaultOption("Autonomous Command", new AutonomousCommand());
+   m_chooser.setDefaultOption("Cube", new AutoSequence1(m_arms, m_clamp));  // %r10
+   m_chooser.addOption("Not Avail", new AutoSequence1(m_arms, m_clamp));
 
     SmartDashboard.putData("Auto Mode", m_chooser);
 
@@ -116,10 +118,9 @@ loadZoneBtn.onTrue(new LoadSequence( m_arms,m_clamp ).withInterruptBehavior(Inte
                           
 final JoystickButton upBtn = new JoystickButton(joystick, 5);        
 upBtn.whileTrue(new RaiseClamp( m_arms ).withInterruptBehavior(InterruptionBehavior.kCancelSelf));  // %r5
-                        
+                       
 final JoystickButton downBtn = new JoystickButton(joystick, 3);        
 downBtn.whileTrue(new LowerClamp( m_arms ).withInterruptBehavior(InterruptionBehavior.kCancelSelf));  // %r5
-                      
 
   }
 
@@ -133,15 +134,15 @@ downBtn.whileTrue(new LowerClamp( m_arms ).withInterruptBehavior(InterruptionBeh
     return joystick;
     }
 
-//public Command getAutonomousCommand() {
+public Command getAutonomousCommand() {
   // The selected command will be run in autonomous from arms test %r
-//  return m_chooser.getSelected();
-//}
+  return m_chooser.getSelected();
+}
 
-  public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    return new InstantCommand();
-  }
+  // public Command getAutonomousCommand() {
+  //   // An ExampleCommand will run in autonomous
+  //   return new InstantCommand();
+  // }
 
   private static double deadband(double value, double deadband) {
     if (Math.abs(value) > deadband) {
