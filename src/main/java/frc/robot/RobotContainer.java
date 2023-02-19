@@ -68,8 +68,8 @@ public class RobotContainer {
 
     // Configure autonomous sendable chooser
    // m_chooser.setDefaultOption("Autonomous Command", new AutonomousCommand());
-   m_chooser.setDefaultOption("Cube", new AutoSequence1(m_arms, m_clamp));  // %r10
-   m_chooser.addOption("Not Avail", new AutoSequence1(m_arms, m_clamp));
+   m_chooser.setDefaultOption("Cube", new AutoSequence1(m_arms, m_clamp, m_drivetrainSubsystem));  // %r10
+   m_chooser.addOption("Not Avail", new AutoSequence1(m_arms, m_clamp, m_drivetrainSubsystem));
 
     SmartDashboard.putData("Auto Mode", m_chooser);
 
@@ -121,6 +121,9 @@ upBtn.whileTrue(new RaiseClamp( m_arms ).withInterruptBehavior(InterruptionBehav
                        
 final JoystickButton downBtn = new JoystickButton(joystick, 3);        
 downBtn.whileTrue(new LowerClamp( m_arms ).withInterruptBehavior(InterruptionBehavior.kCancelSelf));  // %r5
+
+// final JoystickButton driveBtn = new JoystickButton(joystick, 6);        
+// driveBtn.whileTrue(new DriveDistance( m_drivetrainSubsystem, .3 ).withTimeout(1));  // %r5 n test
 
   }
 
