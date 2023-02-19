@@ -5,7 +5,7 @@
 
 // ?????  how is AllowedErr set???
 // is maxRPM used???
-
+// added 4 relay conntrol to drive RGB LED light string.
 //// ROBOTBUILDER TYPE: Subsystem.
 
 package frc.robot.subsystems;
@@ -21,6 +21,10 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import edu.wpi.first.wpilibj.DigitalOutput;
+import edu.wpi.first.wpilibj.DriverStation;
+
+
 
 /**
  *
@@ -42,6 +46,11 @@ public class Arms extends SubsystemBase {
   private SparkMaxPIDController pidElbow;
   private RelativeEncoder elbow_encoder;
 
+  private DigitalOutput m_redLED; // relays 1-4
+  private DigitalOutput m_greenLED;
+  private DigitalOutput m_blueLED;
+  private DigitalOutput m_relay4;
+  
   public Arms() {
     // initialize SPARK MAX neo500 w/ 100:1
     arm_motor = new CANSparkMax(ArmID1, MotorType.kBrushless);
@@ -87,6 +96,15 @@ public class Arms extends SubsystemBase {
     pidElbow.setSmartMotionMaxAccel(10000, smartMotionSlot);
     pidElbow.setSmartMotionAllowedClosedLoopError(allowedErr, smartMotionSlot); // ?????????????
 
+    // setup LED relays.  Controlled by DIO 0-3 
+    m_redLED = new DigitalOutput(0);  // relays 1-4
+    m_greenLED = new DigitalOutput(1);
+    m_blueLED = new DigitalOutput(2);
+    m_relay4 = new DigitalOutput(3);
+    if (DriverStation.getAlliance() == DriverStation.Alliance.Red)
+      m_redLED.set(true);
+    else
+      m_blueLED.set(true);
   }
 
   @Override
@@ -129,5 +147,12 @@ public class Arms extends SubsystemBase {
     return arm_encoder.getPosition();
   }
 
+  public void setLEDRelays (boolean relay1,boolean relay2,
+  boolean relay3,boolean relay4){
+    m_redLED.set(relay1);  // red LED string
+    m_greenLED.set(relay2);
+    m_blueLED.set(relay3);
+    m_relay4.set(relay4);
+  }
   
 }
