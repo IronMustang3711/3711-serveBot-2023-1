@@ -28,8 +28,8 @@ public class AutoSequence1 extends SequentialCommandGroup {
     new SequentialCommandGroup(
       new Close(clampSystem).withTimeout(0.5), // clamp cube
     //  new LoadZone(armSystem).withTimeout(2.0), // get up to clear stuff
-      new ArmsLevel3(armSystem).withTimeout(2.0), // Position at top step
-      new LowerClamp(armSystem ).withTimeout(1.0), // lower a bit.
+      new ArmsLevel3(armSystem).withTimeout(2.5), // Position at top step
+      new LowerClamp(armSystem ).withTimeout(1.5), // lower a bit.
 
       new ParallelCommandGroup(
         new Open(clampSystem).withTimeout(0.5), // drop cube
@@ -39,7 +39,7 @@ public class AutoSequence1 extends SequentialCommandGroup {
       new LoadZone(armSystem).withTimeout(0.5), // get up to clear stuff
       new StowArms(armSystem).withTimeout(2.0), // stow it.
       
-      new DriveDistance( m_drivetrainSubsystem, -.6 ).withTimeout(6))  // %r5 n test
+      new DriveDistance( m_drivetrainSubsystem, -.6 ).withTimeout(4.7))  // %r5 n test
       
 
       // new ParallelCommandGroup(
