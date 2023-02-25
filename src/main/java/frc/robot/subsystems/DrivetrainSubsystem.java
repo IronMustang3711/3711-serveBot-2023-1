@@ -206,9 +206,10 @@ SwerveDriveOdometry m_odometry;
    * Sets the gyroscope angle to zero. This can be used to set the direction the robot is currently facing to the
    * 'forwards' direction.
    */
-  public void zeroGyroscope() {
+  public void zeroGyroscope(/*double angleOffset*/) {
     // 
-     m_pigeon.setFusedHeading(0.0);
+     m_pigeon.setFusedHeading(/*angleOffset*/0);
+     
 
 
 
@@ -232,6 +233,13 @@ SwerveDriveOdometry m_odometry;
 
   public void drive(ChassisSpeeds chassisSpeeds) {
     m_chassisSpeeds = chassisSpeeds;
+    getPitch();
+  }
+
+  public double getPitch(){
+    double roll = m_pigeon.getRoll();
+    SmartDashboard.putNumber("Pitch", roll);
+    return roll;
   }
 
   @Override

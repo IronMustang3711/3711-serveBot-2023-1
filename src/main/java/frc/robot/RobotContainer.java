@@ -19,7 +19,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
-import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
 
 /**
@@ -84,11 +83,11 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    // Back button zeros the gyroscope
+   // Back button zeros the gyroscope
     new Button(m_controller_one::getTrigger)
             // No requirements because we don't need to interrupt anything
             .whenPressed(m_drivetrainSubsystem::zeroGyroscope);
-            
+
 // Create some buttons  //%r
 final JoystickButton openBtn = new JoystickButton(joystick, 2);        
 openBtn.whileTrue(new Open( m_clamp ).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
@@ -122,8 +121,11 @@ upBtn.whileTrue(new RaiseClamp( m_arms ).withInterruptBehavior(InterruptionBehav
 final JoystickButton downBtn = new JoystickButton(joystick, 3);        
 downBtn.whileTrue(new LowerClamp( m_arms ).withInterruptBehavior(InterruptionBehavior.kCancelSelf));  // %r5
 
-// final JoystickButton driveBtn = new JoystickButton(joystick, 6);        
-// driveBtn.whileTrue(new DriveDistance( m_drivetrainSubsystem, .3 ).withTimeout(1));  // %r5 n test
+final JoystickButton driveBtn = new JoystickButton(joystick, 6);        
+driveBtn.whileTrue(new DriveDistance( m_drivetrainSubsystem, -1 ).withTimeout(1));  // %r5 n test
+
+final JoystickButton climbBtn = new JoystickButton(joystick, 4);        
+climbBtn.whileTrue(new ClimbRamp(m_drivetrainSubsystem));  // %r5 n test
 
   }
 
@@ -144,7 +146,7 @@ public Command getAutonomousCommand() {
 
   // public Command getAutonomousCommand() {
   //   // An ExampleCommand will run in autonomous
-  //   return new InstantCommand();
+  //   return new InstantCommand()
   // }
 
   private static double deadband(double value, double deadband) {
