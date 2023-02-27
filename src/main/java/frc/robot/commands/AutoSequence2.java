@@ -18,18 +18,17 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class AutoSequence1 extends SequentialCommandGroup {
+public class AutoSequence2 extends SequentialCommandGroup {
   /** Creates a new AutoSequence1. */ 
 
-  public AutoSequence1(Arms armSystem, Clamp clampSystem , DrivetrainSubsystem m_drivetrainSubsystem) {
+  public AutoSequence2(Arms armSystem, Clamp clampSystem , DrivetrainSubsystem m_drivetrainSubsystem) {
    
     addCommands(
 
     new SequentialCommandGroup(
 
       new AutoScore(armSystem, clampSystem, m_drivetrainSubsystem),
-      new DriveDistance( m_drivetrainSubsystem, -1.0 ).withTimeout(4.2))  // backup about 4 meters <<<<<<<<<<<<<<
-      
+      new ClimbRamp( m_drivetrainSubsystem ).withTimeout(8.0))  // give it 8 seconds <<<<<<<<<<<<<<     
      );
   }
 }

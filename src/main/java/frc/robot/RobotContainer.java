@@ -62,13 +62,13 @@ public class RobotContainer {
     configureButtonBindings();
 
     // Configure default commands
-    m_arms.setDefaultCommand(new ManualArms( m_arms ));
+    m_arms.setDefaultCommand(new StowArms( m_arms));  // %r 2-26
     m_clamp.setDefaultCommand(new ManualClamp( m_clamp ));
 
     // Configure autonomous sendable chooser
    // m_chooser.setDefaultOption("Autonomous Command", new AutonomousCommand());
-   m_chooser.setDefaultOption("Cube", new AutoSequence1(m_arms, m_clamp, m_drivetrainSubsystem));  // %r10
-   m_chooser.addOption("Not Avail", new AutoSequence1(m_arms, m_clamp, m_drivetrainSubsystem));
+   m_chooser.setDefaultOption("Climb Ramp", new AutoSequence2(m_arms, m_clamp, m_drivetrainSubsystem)); 
+   m_chooser.addOption("Exit Community", new AutoSequence1(m_arms, m_clamp, m_drivetrainSubsystem));
 
     SmartDashboard.putData("Auto Mode", m_chooser);
 
@@ -84,9 +84,9 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
    // Back button zeros the gyroscope
-    new Button(m_controller_one::getTrigger)
-            // No requirements because we don't need to interrupt anything
-            .whenPressed(m_drivetrainSubsystem::zeroGyroscope);
+    // new Button(m_controller_one::getTrigger)
+    //         // No requirements because we don't need to interrupt anything
+    //         .whenPressed(m_drivetrainSubsystem::zeroGyroscope);
 
 // Create some buttons  //%r
 final JoystickButton openBtn = new JoystickButton(joystick, 2);        
@@ -104,28 +104,29 @@ level3Btn.onTrue(new ArmsLevel3( m_arms ).withInterruptBehavior(InterruptionBeha
 final JoystickButton level2Btn = new JoystickButton(joystick, 10);    // level 2 middle 
 level2Btn.onTrue(new ArmsLevel2( m_arms ).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
-final JoystickButton level1Btn = new JoystickButton(joystick, 12);        // lever 1 carpet
+final JoystickButton level1Btn = new JoystickButton(joystick, 12);        // leve1 1 carpet
 level1Btn.onTrue(new ArmsLevel1( m_arms ).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
-final JoystickButton GroundBtn = new JoystickButton(joystick, 9);        // lever 1 carpet
+final JoystickButton GroundBtn = new JoystickButton(joystick, 9);        // Ground Pickup
 GroundBtn.onTrue(new GroundPickup( m_arms ).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
-final JoystickButton loadZoneBtn = new JoystickButton(joystick, 11);        // Substation // %r5
-// test load sequence  loadZoneBtn.onTrue(new LoadZone( m_arms ).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
-// open clamp and go to load position.
+final JoystickButton loadZoneBtn = new JoystickButton(joystick, 11);        // Substation 
 loadZoneBtn.onTrue(new LoadSequence( m_arms,m_clamp ).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
                           
 final JoystickButton upBtn = new JoystickButton(joystick, 5);        
-upBtn.whileTrue(new RaiseClamp( m_arms ).withInterruptBehavior(InterruptionBehavior.kCancelSelf));  // %r5
+upBtn.whileTrue(new RaiseClamp( m_arms ).withInterruptBehavior(InterruptionBehavior.kCancelSelf));  
                        
 final JoystickButton downBtn = new JoystickButton(joystick, 3);        
-downBtn.whileTrue(new LowerClamp( m_arms ).withInterruptBehavior(InterruptionBehavior.kCancelSelf));  // %r5
+downBtn.whileTrue(new LowerClamp( m_arms ).withInterruptBehavior(InterruptionBehavior.kCancelSelf)); 
 
-final JoystickButton driveBtn = new JoystickButton(joystick, 6);        
-driveBtn.whileTrue(new DriveDistance( m_drivetrainSubsystem, -1 ).withTimeout(1));  // %r5 n test
+final JoystickButton zeroBtn = new JoystickButton(m_controller_one, 1);        
+zeroBtn.onTrue(new SetGyro( m_drivetrainSubsystem, 0 ));  
 
-final JoystickButton climbBtn = new JoystickButton(joystick, 4);        
-climbBtn.whileTrue(new ClimbRamp(m_drivetrainSubsystem));  // %r5 n test
+final JoystickButton driveBtn = new JoystickButton(m_controller_one, 7);        
+driveBtn.whileTrue(new DriveDistance( m_drivetrainSubsystem, -1 ));  
+
+final JoystickButton climbBtn = new JoystickButton(m_controller_one, 8);        
+climbBtn.whileTrue(new ClimbRamp(m_drivetrainSubsystem));  
 
   }
 

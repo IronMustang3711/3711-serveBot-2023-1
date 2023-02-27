@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DrivetrainSubsystem;
 
@@ -11,6 +12,7 @@ public class ClimbRamp extends CommandBase {
 
     private int stage;
     private double pitch, peakPitch;
+    private double startTime;
 
 
    
@@ -27,35 +29,45 @@ public class ClimbRamp extends CommandBase {
     public void initialize() {
         stage = 0;
         peakPitch = 0;
+        m_drivetrainSubsystem.drive(new ChassisSpeeds(-0.6, 0, 0));
     }
   
     @Override
     public void execute() {
         pitch = m_drivetrainSubsystem.getPitch();
+        // double rawPitch = m_drivetrainSubsystem.getPitch();
+        // double filter = 0.5;  // simple exponential filter      **** not used.
+        // pitch = (filter * rawPitch) + ((1 - filter) * pitch); 
         switch(stage){
 
-            case 0:
-            m_drivetrainSubsystem.drive(new ChassisSpeeds(-0.6, 0, 0));
-            if (pitch > 10)
-                stage = 1;
+            case 0:  // approach ramp
+            if (pitch > 10)  // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+            {
+                stage = 1;  // on ramp, slow down
+                m_drivetrainSubsystem.drive(new ChassisSpeeds(-0.3, 0, 0));
+            }
             break;
 
-            case 1:
-            m_drivetrainSubsystem.drive(new ChassisSpeeds(-0.3, 0, 0));
-            if (pitch < (peakPitch - 10))
-                stage = 2;
-            if (peakPitch < pitch)
-
+            case 1: // climb ramp
+            if (pitch < (peakPitch - 10))  // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+            {
+                stage = 2;  // on platform, reverse a little bit.
+                m_drivetrainSubsystem.drive(new ChassisSpeeds(0.2, 0, 0));
+                startTime = Timer.getFPGATimestamp();
+            }
+            if (peakPitch < pitch)  // save peak
                 peakPitch = pitch;
             break;
 
-            case 2:
-            m_drivetrainSubsystem.drive(new ChassisSpeeds(0, 0, 0.1));
+            case 2:  // backup a little to balance platform
+            if ((Timer.getFPGATimestamp() - startTime) > 0.3) // stop after timeout of .3 seconds <<<<<<<<<<<<<<<<<<
+            {
+                stage = 3; // time to quit.  Lock wheels
+                m_drivetrainSubsystem.drive(new ChassisSpeeds(0, 0, 0.1));
+            }
             break;
 
         }
-        // You can use `new ChassisSpeeds(...)` for robot-oriented movement instead of field-oriented movement
-        // m_drivetrainSubsystem.drive(new ChassisSpeeds(m_xSpeed, 0.0, 0.0));
      
     }
 
@@ -66,8 +78,8 @@ public class ClimbRamp extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        if ((stage == 2) && (pitch < 3))
-            return true;
+        if (stage == 3) 
+            return true;  // quit when we lock wheels
         else
             return false;
     }
