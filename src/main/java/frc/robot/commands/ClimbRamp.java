@@ -29,7 +29,7 @@ public class ClimbRamp extends CommandBase {
     public void initialize() {
         stage = 0;
         peakPitch = 0;
-        m_drivetrainSubsystem.drive(new ChassisSpeeds(-0.6, 0, 0));
+        m_drivetrainSubsystem.drive(new ChassisSpeeds(-1, 0, 0));
     }
   
     @Override
@@ -44,7 +44,7 @@ public class ClimbRamp extends CommandBase {
             if (pitch > 10)  // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
             {
                 stage = 1;  // on ramp, slow down
-                m_drivetrainSubsystem.drive(new ChassisSpeeds(-0.3, 0, 0));
+                m_drivetrainSubsystem.drive(new ChassisSpeeds(-0.5, 0, 0));
             }
             break;
 
