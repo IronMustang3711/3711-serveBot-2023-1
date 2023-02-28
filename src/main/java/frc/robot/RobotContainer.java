@@ -62,7 +62,7 @@ public class RobotContainer {
     configureButtonBindings();
 
     // Configure default commands
-    m_arms.setDefaultCommand(new StowArms( m_arms));  // %r 2-26
+    m_arms.setDefaultCommand(new ManualArms( m_arms));  
     m_clamp.setDefaultCommand(new ManualClamp( m_clamp ));
 
     // Configure autonomous sendable chooser
