@@ -26,7 +26,7 @@ public class AutoScore extends SequentialCommandGroup {
     addCommands(
 
         new SequentialCommandGroup(
-            //new SetGyro(m_drivetrainSubsystem, 180), // Robot starts aimed at drivers
+            new SetGyro(m_drivetrainSubsystem, 180), // Robot starts aimed at drivers
             new Close(clampSystem).withTimeout(0.5), // clamp cube
             
             new ArmsLevel3(armSystem).withTimeout(2.5), // Position at top step

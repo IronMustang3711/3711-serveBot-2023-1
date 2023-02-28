@@ -208,7 +208,7 @@ SwerveDriveOdometry m_odometry;
    */
   public void zeroGyroscope(double angleOffset) {
     // 
-     m_pigeon.setFusedHeading(angleOffset);
+     m_pigeon.setFusedHeading(angleOffset * 64);  // value is supposed to by 1/64 degree units
   
 
 
