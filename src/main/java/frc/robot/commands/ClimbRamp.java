@@ -40,94 +40,63 @@ public class ClimbRamp extends CommandBase {
         // double rawPitch = m_drivetrainSubsystem.getPitch();
         // double filter = 0.5;  // simple exponential filter      **** not used.
         // pitch = (filter * rawPitch) + ((1 - filter) * pitch); 
+        // Note: robot backs up to get on ramp, so -x velocities are going backwards.
         switch(stage){
 
             case 0:  // approach ramp
             if (pitch > 10)  // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
             {
-                stage = 1;  // on ramp, slow down
+                stage = 1;  // on ramp, slow down 
                 startTime = Timer.getFPGATimestamp();
             }
             break;
 
-        case 1: // climb ramp
+        case 1: // climbing ramp, slow down after 1 second
             if ((Timer.getFPGATimestamp() - startTime) > 1.0) {
                 m_drivetrainSubsystem.drive(new ChassisSpeeds(-0.3, 0, 0));
 
-                if (pitch < 10) //(peakPitch - 10)) // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+                if (pitch < 10) // pitch is dropping <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
                 {
                     stage = 2; // on platform, reverse a little bit.
                     m_drivetrainSubsystem.drive(new ChassisSpeeds(0.4, 0, 0));
                     startTime = Timer.getFPGATimestamp();
                 }
             }
-            if (peakPitch < pitch)  // save peak
+            if (peakPitch < pitch)  // save peak  not used
                 peakPitch = pitch;
             break;
 
-            case 2:  // backup a little to balance platform
-            if ((Timer.getFPGATimestamp() - startTime) > 0.1) // stop after timeout of .3 seconds <<<<<<<<<<<<<<<<<<
+            case 2: // Platform starting to level out
+            
+            if ((Timer.getFPGATimestamp() - startTime) > 0.1) // stop after timeout of .1 seconds <<<<<<<<<<<<<<<<<<
             {
-                stage = 3; // time to quit.  Lock wheels
+                stage = 3; // cock wheels and wait for platform to settle
                 m_drivetrainSubsystem.drive(new ChassisSpeeds(0, 0.02, 0.0));
                 startTime = Timer.getFPGATimestamp();
             }
             break;
 
-        }
-     
+            case 3: // back and forth until platform balanced
+ 
+            if ((Timer.getFPGATimestamp() - startTime) > 1) // wait time for settling platform <<<<<<<<<<<<<<<<<<
+            {
+                if (java.lang.Math.abs(pitch) > 2) // too much pitch, not level <<<<<<<<<<<<<<<<<<
+                {
+                    if (pitch > 0)  // if pitch still + go backward
+                        m_drivetrainSubsystem.drive(new ChassisSpeeds(0.4, 0, 0));
+                    else  // otherwise go for forward.
+                        m_drivetrainSubsystem.drive(new ChassisSpeeds(-0.4, 0, 0));
+                }
+                else{
+                   stage = 10; // time to quit.  Lock wheels again.
+                   m_drivetrainSubsystem.drive(new ChassisSpeeds(0, 0.02, 0.0));
+                   startTime = Timer.getFPGATimestamp();
+                }
+            }
+            break;
+        }    
     }
 
-    public void execute2() {
-        pitch = m_drivetrainSubsystem.getPitch();
-        // double rawPitch = m_drivetrainSubsystem.getPitch();
-        // double filter = 0.5;  // simple exponential filter      **** not used.
-        // pitch = (filter * rawPitch) + ((1 - filter) * pitch); 
-        switch(stage){
-
-            case 0:  // approach ramp
-            if (pitch > 10)  // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-            {
-                stage = 1;  // on ramp, slow down
-                m_drivetrainSubsystem.drive(new ChassisSpeeds(-0.9, 0, 0));
-                startTime = Timer.getFPGATimestamp();
-            }
-            break;
-
-            case 1: // climb ramp
-            if ((Timer.getFPGATimestamp() - startTime) > 1.0)  // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-            {
-                stage = 2;  // on platform, reverse a little bit.
-                m_drivetrainSubsystem.drive(new ChassisSpeeds(0.7, 0, 0));
-                startTime = Timer.getFPGATimestamp();
-            }
-            break;
-
-            case 2:  // wait for platform
-            if ((Timer.getFPGATimestamp() - startTime) > 1.0) // wait for platform to settle <<<<<<<<<<<<<<<<<<
-            {
-                stage = 3; // time to quit.  stop motion
-                m_drivetrainSubsystem.drive(new ChassisSpeeds(0, 0, 0.0));
-            }
-  
-            case 3:  // wait for platform
-            if ((pitch > 2) || (pitch < -2))  // can't find math.abs <<<<<<<<<<<<<<<<<<
-            {
-                if (pitch > 2)
-                m_drivetrainSubsystem.drive(new ChassisSpeeds(.4,0,0));
-                if (pitch < -2)
-                m_drivetrainSubsystem.drive(new ChassisSpeeds(-.4,0,0));
-            }
-            else
-            {
-              stage = 4; // time to quit.  lock wheels
-              m_drivetrainSubsystem.drive(new ChassisSpeeds(0,0.105,0));
-            }
-            break;
-
-        }
-     
-    }
 
 
     @Override
@@ -137,7 +106,7 @@ public class ClimbRamp extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        if ((stage == 3) && ((Timer.getFPGATimestamp() - startTime) > 2.0)) 
+        if ((stage == 10) && ((Timer.getFPGATimestamp() - startTime) > 1.0)) // may not be needed
             return true;  // quit when we lock wheels
         else
             return false;
