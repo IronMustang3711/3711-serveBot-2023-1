@@ -104,6 +104,7 @@ SwerveDriveOdometry m_odometry;
   private  SwerveModule m_backRightModule;
 
   private ChassisSpeeds m_chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
+  private double gyroAngle;
 
   public DrivetrainSubsystem() {
     ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
@@ -208,9 +209,9 @@ SwerveDriveOdometry m_odometry;
    */
   public void zeroGyroscope(double angleOffset) {
     // 
-     m_pigeon.setFusedHeading(angleOffset * 64);  // value is supposed to by 1/64 degree units
-  
-
+    gyroAngle = angleOffset;
+     m_pigeon.setFusedHeading(0);  // value is supposed to by 1/64 degree units
+     SmartDashboard.putNumber("gyro set", gyroAngle);
 
     // 
 //    m_navx.zeroYaw();
@@ -218,7 +219,8 @@ SwerveDriveOdometry m_odometry;
 
   public Rotation2d getGyroscopeRotation() {
     // 
-    return Rotation2d.fromDegrees(m_pigeon.getFusedHeading());
+    double heading = m_pigeon.getFusedHeading() + gyroAngle;
+    return Rotation2d.fromDegrees(heading);
 
     // 
 //    if (m_navx.isMagnetometerCalibrated()) {

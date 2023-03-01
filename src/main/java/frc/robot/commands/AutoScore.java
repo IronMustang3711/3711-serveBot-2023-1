@@ -34,10 +34,10 @@ public class AutoScore extends SequentialCommandGroup {
 
             new ParallelCommandGroup(
                 new Open(clampSystem).withTimeout(0.5), // drop cube
-                new ArmsLevel3(armSystem).withTimeout(0.5)),  // raise to be clear
+                new ArmsLevel3(armSystem).withTimeout(0.5)) // raise to be clear
 
-            new LoadZone(armSystem).withTimeout(0.5), // get up to clear stuff
-            new StowArms(armSystem).withTimeout(2.0) // stow it.
+       //     new LoadZone(armSystem).withTimeout(0.5), // get up to clear stuff
+       //     new StowArms(armSystem).withTimeout(2.0) // stow it.
         )
     );
   }

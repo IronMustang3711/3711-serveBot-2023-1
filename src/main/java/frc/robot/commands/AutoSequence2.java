@@ -28,7 +28,8 @@ public class AutoSequence2 extends SequentialCommandGroup {
     new SequentialCommandGroup(
 
       new AutoScore(armSystem, clampSystem, m_drivetrainSubsystem),
-      new ClimbRamp( m_drivetrainSubsystem ).withTimeout(8.0))  // give it 8 seconds <<<<<<<<<<<<<<     
+      new ClimbRamp( m_drivetrainSubsystem ).withTimeout(7.0), // give it 5 seconds <<<<<<<<<<<<<<     
+      new StowArms(armSystem))
      );
   }
 }
