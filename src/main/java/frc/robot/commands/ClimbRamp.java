@@ -31,7 +31,7 @@ public class ClimbRamp extends CommandBase {
     public void initialize() {
         stage = 0;
         peakPitch = 0;
-        m_drivetrainSubsystem.drive(new ChassisSpeeds(-1.3, 0, 0));
+        m_drivetrainSubsystem.drive(new ChassisSpeeds(-1.6, 0, 0));
     }
   
     @Override
@@ -66,7 +66,7 @@ public class ClimbRamp extends CommandBase {
             break;
 
             case 2:  // backup a little to balance platform
-            if ((Timer.getFPGATimestamp() - startTime) > 0.2) // stop after timeout of .3 seconds <<<<<<<<<<<<<<<<<<
+            if ((Timer.getFPGATimestamp() - startTime) > 0.25) // stop after timeout of .3 seconds <<<<<<<<<<<<<<<<<<
             {
                 stage = 3; // time to quit.  Lock wheels
                 m_drivetrainSubsystem.drive(new ChassisSpeeds(0, 0.02, 0.0));
