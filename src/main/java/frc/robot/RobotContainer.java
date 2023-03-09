@@ -59,7 +59,6 @@ public class RobotContainer {
 
     SmartDashboard.putData(m_clamp);
     SmartDashboard.putData(m_arms);
-    SmartDashboard.putData("Drive w/ Cam", new Drive2Load(m_drivetrainSubsystem, 0.5)); // try drive to target.
   
     configureButtonBindings();
 
@@ -130,8 +129,19 @@ driveBtn.whileTrue(new DriveDistance( m_drivetrainSubsystem, -1 ));
 final JoystickButton climbBtn = new JoystickButton(m_controller_one, 8);        
 climbBtn.whileTrue(new ClimbRamp(m_drivetrainSubsystem));  
 
-final JoystickButton loadDriveBtn = new JoystickButton(m_controller_one, 11);        
-loadDriveBtn.whileTrue(new Drive2Load(m_drivetrainSubsystem, 0.5));
+final JoystickButton ConeDriveBtn = new JoystickButton(m_controller_one, 4);        
+ConeDriveBtn.whileTrue(new Drive2Cone(m_drivetrainSubsystem, 0.5));
+
+final JoystickButton CubeDriveBtn = new JoystickButton(m_controller_one, 6);        
+CubeDriveBtn.whileTrue(new Drive2Cone(m_drivetrainSubsystem, 0.5));
+
+final JoystickButton Heading180Btn = new JoystickButton(m_controller_one, 2);        
+Heading180Btn.whileTrue(new FixedHeadingCommand(
+            m_drivetrainSubsystem,
+            () -> -modifyAxis(m_controller_two.getY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+            () -> -modifyAxis(m_controller_two.getX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+            () -> 180
+    ));
 
   }
 
