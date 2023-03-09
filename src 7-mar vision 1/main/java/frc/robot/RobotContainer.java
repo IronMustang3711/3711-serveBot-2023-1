@@ -130,9 +130,6 @@ driveBtn.whileTrue(new DriveDistance( m_drivetrainSubsystem, -1 ));
 final JoystickButton climbBtn = new JoystickButton(m_controller_one, 8);        
 climbBtn.whileTrue(new ClimbRamp(m_drivetrainSubsystem));  
 
-final JoystickButton loadDriveBtn = new JoystickButton(m_controller_one, 11);        
-loadDriveBtn.whileTrue(new Drive2Load(m_drivetrainSubsystem, 0.5));
-
   }
 
   /**
