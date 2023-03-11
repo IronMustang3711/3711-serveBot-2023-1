@@ -212,15 +212,17 @@ SwerveDriveOdometry m_odometry;
     gyroAngle = angleOffset;
      m_pigeon.setFusedHeading(0);  // value is supposed to by 1/64 degree units
      SmartDashboard.putNumber("gyro set", gyroAngle);
-
-    // 
-//    m_navx.zeroYaw();
   }
 
   public Rotation2d getGyroscopeRotation() {
     // return x-y heading
     double heading = m_pigeon.getFusedHeading() + gyroAngle;
     return Rotation2d.fromDegrees(heading);
+  }
+
+  public void adjustGyroscopeHeading(double adjustment) {
+    gyroAngle += adjustment;
+    return;
   }
 
   public double getGyroscopeHeading() {

@@ -45,7 +45,7 @@ public class FixedHeadingCommand extends CommandBase {
         SmartDashboard.putNumber("Heading Error", error);
 
         double limit = 2;
-        double rotateDrive = error * 1;  // proportional constant = 1????
+        double rotateDrive = error * 0.15;  // proportional constant = 1????
         if (rotateDrive > limit)  // drive max 20 degrees per second.
           rotateDrive = limit;
           else if (rotateDrive < -limit)

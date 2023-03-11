@@ -38,6 +38,7 @@ public class Drive2Cube extends CommandBase {
     @Override
     public void execute() {
         // camera.setPipelineIndex(0);
+         
         var result = camera.getLatestResult(); // this only looks for cone for now?????
         double turnDrive = 0;
 

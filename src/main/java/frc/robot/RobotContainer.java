@@ -120,30 +120,42 @@ upBtn.whileTrue(new RaiseClamp( m_arms ).withInterruptBehavior(InterruptionBehav
 final JoystickButton downBtn = new JoystickButton(joystick, 3);        
 downBtn.whileTrue(new LowerClamp( m_arms ).withInterruptBehavior(InterruptionBehavior.kCancelSelf)); 
 
-final JoystickButton zeroBtn = new JoystickButton(m_controller_one, 1);        
+// use trigger for fixed heading.
+final JoystickButton zeroBtn = new JoystickButton(m_controller_one, 7);        
 zeroBtn.onTrue(new SetGyro( m_drivetrainSubsystem, 0 ));  
 
-final JoystickButton driveBtn = new JoystickButton(m_controller_one, 7);        
-driveBtn.whileTrue(new DriveDistance( m_drivetrainSubsystem, -1 ));  
+// final JoystickButton driveBtn = new JoystickButton(m_controller_one, 7);        
+// driveBtn.whileTrue(new DriveDistance( m_drivetrainSubsystem, -1 ));  
 
-final JoystickButton climbBtn = new JoystickButton(m_controller_one, 8);        
-climbBtn.whileTrue(new ClimbRamp(m_drivetrainSubsystem));  
+// final JoystickButton climbBtn = new JoystickButton(m_controller_one, 8);        
+// climbBtn.whileTrue(new ClimbRamp(m_drivetrainSubsystem));  
 
 final JoystickButton ConeDriveBtn = new JoystickButton(m_controller_one, 4);        
 ConeDriveBtn.whileTrue(new Drive2Cone(m_drivetrainSubsystem, 0.5));
 
 final JoystickButton CubeDriveBtn = new JoystickButton(m_controller_one, 6);        
-CubeDriveBtn.whileTrue(new Drive2Cone(m_drivetrainSubsystem, 0.5));
+CubeDriveBtn.whileTrue(new Drive2Cube(m_drivetrainSubsystem, 0.5));
 
-final JoystickButton Heading180Btn = new JoystickButton(m_controller_one, 2);        
+final JoystickButton Heading180Btn = new JoystickButton(m_controller_one, 2);
 Heading180Btn.whileTrue(new FixedHeadingCommand(
-            m_drivetrainSubsystem,
-            () -> -modifyAxis(m_controller_two.getY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-            () -> -modifyAxis(m_controller_two.getX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-            () -> 180
-    ));
+    m_drivetrainSubsystem,
+    () -> -modifyAxis(m_controller_two.getY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+    () -> -modifyAxis(m_controller_two.getX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+    () -> 180));
 
-  }
+final JoystickButton Heading0Btn = new JoystickButton(m_controller_one, 1);
+Heading0Btn.whileTrue(new FixedHeadingCommand(
+    m_drivetrainSubsystem,
+    () -> -modifyAxis(m_controller_two.getY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+    () -> -modifyAxis(m_controller_two.getX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+    () -> 0));
+
+final JoystickButton CCWAdjustBtn = new JoystickButton(m_controller_two, 4);
+CCWAdjustBtn.whileTrue(new AdjustGyro(m_drivetrainSubsystem, -0.3));
+
+final JoystickButton CWAdjustBtn = new JoystickButton(m_controller_two, 5);
+CWAdjustBtn.whileTrue(new AdjustGyro(m_drivetrainSubsystem, 0.3));
+}
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

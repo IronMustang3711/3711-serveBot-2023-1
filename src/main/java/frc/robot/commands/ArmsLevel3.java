@@ -66,7 +66,7 @@ public class ArmsLevel3 extends CommandBase {
             m_arms.position(0, 73);
         }
         else {
-            m_arms.position(13, 73);
+            m_arms.position(15, 73);
         }
     }
 

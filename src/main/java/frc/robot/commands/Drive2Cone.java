@@ -29,13 +29,13 @@ public class Drive2Cone extends CommandBase {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        camera.setPipelineIndex(0);  // select cone targeting
-        close = false;
+      camera.setPipelineIndex(0);  // select cone targeting
+      close = false;
     }
   
     @Override
     public void execute() {
-        // camera.setPipelineIndex(0);
+     // camera.setPipelineIndex(0);
         var result = camera.getLatestResult(); // this only looks for cone for now?????
         double turnDrive = 0;
 
