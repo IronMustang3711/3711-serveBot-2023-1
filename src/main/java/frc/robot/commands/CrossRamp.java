@@ -38,18 +38,20 @@ public class CrossRamp extends CommandBase {
     @Override
     public void execute() {
         pitch = m_drivetrainSubsystem.getPitch();
-        // double rawPitch = m_drivetrainSubsystem.getPitch();
-        // double filter = 0.5;  // simple exponential filter      **** not used.
-        // pitch = (filter * rawPitch) + ((1 - filter) * pitch); 
-        // Note: robot backs up to get on ramp, so -x velocities are going backwards.
+        // When backing up over platform, pitch goes up or 10 degrees while climbing
+        // then drops thru 0 to less than -10 degrees when exiting platform.
+        // when off of ramp, the pitch returns to +/- 1 degree.
+        // robot then reverses direction and pitch goes below -10 degree while climbing
+        // then the pitch value climbs back to or thru 0.
+                // Note: robot backs up to get on ramp, so -x velocities are going backwards.
         switch(stage){
 
         case 0:  // approach ramp
             if ( (pitch > 10) ||
-            ((Timer.getFPGATimestamp() - startTime) > 3.0)) 
+            ((Timer.getFPGATimestamp() - startTime) > 2.0)) 
             { // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
                 stage = 1; // on ramp, keep going
-                m_drivetrainSubsystem.drive(new ChassisSpeeds(-.7, 0.0, 0.0)); // slow down
+ //               m_drivetrainSubsystem.drive(new ChassisSpeeds(-.7, 0.0, 0.0)); // slow down
                 startTime = Timer.getFPGATimestamp();
             }
             break;
@@ -58,7 +60,7 @@ public class CrossRamp extends CommandBase {
             if ((pitch < -5) || // decending ramp Slow a little
                     ((Timer.getFPGATimestamp() - startTime) > 3.0)) 
             {
-                m_drivetrainSubsystem.drive(new ChassisSpeeds(-0.6, 0.0, 0.0)); // slow down
+                m_drivetrainSubsystem.drive(new ChassisSpeeds(-0.7, 0.0, 0.0)); // slow down
                 stage = 2; // exiting platform.
                 startTime = Timer.getFPGATimestamp();
             }
@@ -66,7 +68,7 @@ public class CrossRamp extends CommandBase {
 
         case 2: // exiting ramp
             if ((pitch > -3) || // leveling out, slow down.
-                    ((Timer.getFPGATimestamp() - startTime) > 3.0)) 
+                    ((Timer.getFPGATimestamp() - startTime) > 1.5)) 
             {
                 startTime = Timer.getFPGATimestamp();
                 m_drivetrainSubsystem.drive(new ChassisSpeeds(-0.4, 0.0, 0.0)); // slow down
@@ -87,7 +89,7 @@ public class CrossRamp extends CommandBase {
 
         case 4: // go back up the ramp
             if ((pitch < -10) ||  // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-            ((Timer.getFPGATimestamp() - startTime) > 3.0)) 
+            ((Timer.getFPGATimestamp() - startTime) > 2.0)) 
             {             
                 stage = 5; // on ramp, keep going
                 m_drivetrainSubsystem.drive(new ChassisSpeeds(0.6, 0.0, 0.0)); // slow down
@@ -96,17 +98,15 @@ public class CrossRamp extends CommandBase {
             break;
 
         case 5: // Platform is starting to level
-            if ((Timer.getFPGATimestamp() - startTime) > 1.0) {
-                m_drivetrainSubsystem.drive(new ChassisSpeeds(0.3, 0, 0));
-
-                if ((pitch > -10) || // pitch is dropping <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-                  ((Timer.getFPGATimestamp() - startTime) > 3.0)) 
+          
+                if ((pitch > -8) || // pitch is dropping <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+                  ((Timer.getFPGATimestamp() - startTime) > 2.0)) 
                 {
                     stage = 6; // on platform, reverse a little bit.
                     m_drivetrainSubsystem.drive(new ChassisSpeeds(-0.4, 0, 0));
                     startTime = Timer.getFPGATimestamp();
                 }
-            }
+           
 
         case 6: // backup a little to balance platform
             if ((Timer.getFPGATimestamp() - startTime) > 0.25) // stop after timeout of .3 seconds <<<<<<<<<<<<<<<<<<
