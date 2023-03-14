@@ -127,8 +127,8 @@ zeroBtn.onTrue(new SetGyro( m_drivetrainSubsystem, 0 ));
 // final JoystickButton driveBtn = new JoystickButton(m_controller_one, 7);        
 // driveBtn.whileTrue(new DriveDistance( m_drivetrainSubsystem, -1 ));  
 
-// final JoystickButton climbBtn = new JoystickButton(m_controller_one, 8);        
-// climbBtn.whileTrue(new ClimbRamp(m_drivetrainSubsystem));  
+final JoystickButton crossBtn = new JoystickButton(m_controller_one, 8);        
+crossBtn.whileTrue(new CrossRamp(m_drivetrainSubsystem));  
 
 final JoystickButton ConeDriveBtn = new JoystickButton(m_controller_one, 4);        
 ConeDriveBtn.whileTrue(new Drive2Cone(m_drivetrainSubsystem, 0.5));

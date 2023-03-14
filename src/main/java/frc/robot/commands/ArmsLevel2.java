@@ -62,10 +62,10 @@ public class ArmsLevel2 extends CommandBase {
     public void execute() {
 
         if (m_arms.getElbowPosition() < 20) {
-            m_arms.position(0, 45);
+            m_arms.position(0, 49);  // 45
         }
         else {
-            m_arms.position(8, 45);
+            m_arms.position(8, 49);
         }
     }
 

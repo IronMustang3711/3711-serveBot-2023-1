@@ -63,10 +63,10 @@ public class ArmsLevel3 extends CommandBase {
         
 
         if (m_arms.getElbowPosition() < 20) {
-            m_arms.position(0, 73);
+            m_arms.position(0, 77); // 73
         }
         else {
-            m_arms.position(15, 73);
+            m_arms.position(15, 77);
         }
     }
 
