@@ -32,6 +32,7 @@ public class ClimbRamp extends CommandBase {
         stage = 0;
         peakPitch = 0;
         m_drivetrainSubsystem.drive(new ChassisSpeeds(-1.6, 0, 0));
+        startTime = Timer.getFPGATimestamp();
     }
   
     @Override
@@ -44,6 +45,12 @@ public class ClimbRamp extends CommandBase {
         switch(stage){
 
             case 0:  // approach ramp
+            if ((Timer.getFPGATimestamp() - startTime) > 2.5) {
+                stage = 10;  // no ramp, must be an exit
+                m_drivetrainSubsystem.drive(new ChassisSpeeds(0, 0.02, 0.0));
+                startTime = Timer.getFPGATimestamp();
+            }
+
             if (pitch > 10)  // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
             {
                 stage = 1;  // on ramp, slow down 

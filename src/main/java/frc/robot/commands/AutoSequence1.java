@@ -28,8 +28,8 @@ public class AutoSequence1 extends SequentialCommandGroup {
     new SequentialCommandGroup(
 
       new AutoScore(armSystem, clampSystem, m_drivetrainSubsystem),
-      new DriveDistance( m_drivetrainSubsystem, -1.0 ).withTimeout(4.2))  // backup about 4 meters <<<<<<<<<<<<<<
-      
+      new DriveDistance( m_drivetrainSubsystem, -1.0 ).withTimeout(4.2),// backup about 4 meters <<<<<<<<<<<<<<
+      new StowArms(armSystem))      
      );
   }
 }

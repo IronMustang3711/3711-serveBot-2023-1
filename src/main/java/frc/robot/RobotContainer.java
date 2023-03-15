@@ -69,7 +69,7 @@ public class RobotContainer {
     // Configure autonomous sendable chooser
    // m_chooser.setDefaultOption("Autonomous Command", new AutonomousCommand());
    m_chooser.setDefaultOption("Climb Ramp", new AutoSequence2(m_arms, m_clamp, m_drivetrainSubsystem)); 
-   m_chooser.addOption("Exit Community", new AutoSequence1(m_arms, m_clamp, m_drivetrainSubsystem));
+   m_chooser.addOption("Exit Community", new AutoSequence2(m_arms, m_clamp, m_drivetrainSubsystem));  // not auto 1
 
     SmartDashboard.putData("Auto Mode", m_chooser);
 
