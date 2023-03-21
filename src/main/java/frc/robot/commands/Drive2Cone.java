@@ -4,6 +4,8 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DrivetrainSubsystem;
 
+import edu.wpi.first.wpilibj.Timer;
+
 import java.util.function.DoubleSupplier;
 
 import org.photonvision.PhotonCamera;
@@ -12,6 +14,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Drive2Cone extends CommandBase {
     private final DrivetrainSubsystem m_drivetrainSubsystem;
+
+    double startTime;
 
     double m_xSpeed;
     PhotonCamera camera = new PhotonCamera("usb1"); // %rod
@@ -31,6 +35,7 @@ public class Drive2Cone extends CommandBase {
     public void initialize() {
       camera.setPipelineIndex(0);  // select cone targeting
       close = false;
+      
     }
   
     @Override
@@ -51,13 +56,25 @@ public class Drive2Cone extends CommandBase {
             else if (turnDrive < -turnLimit)
                 turnDrive = -turnLimit;
 
-            if (target.getArea() > 10) // close if cone is 10% of view
+            if (target.getArea() > 5) { // close if cone is 10% of view
                 close = true;
+            }
+            if(!close) {
+                startTime = Timer.getFPGATimestamp();
+            }
 
-            if (close)  // slow straight if close.  steer and fast if not close
-                m_drivetrainSubsystem.drive(new ChassisSpeeds(0.3, 0, 0));
+            if (close)
+              // slow straight if close.  steer and fast if not close
+              if ((Timer.getFPGATimestamp() - startTime) < .7) {
+                m_drivetrainSubsystem.drive(new ChassisSpeeds(0.35, 0, 0));
+              }
+              else {
+                m_drivetrainSubsystem.drive(new ChassisSpeeds(0.0, 0, 0));
+              }
+                
+                
             else
-                m_drivetrainSubsystem.drive(new ChassisSpeeds(0.6, 0, turnDrive));
+                m_drivetrainSubsystem.drive(new ChassisSpeeds(0.7, 0, turnDrive));
         }      
         else
             m_drivetrainSubsystem.drive(new ChassisSpeeds(0.0, 0.0, 0.0));
