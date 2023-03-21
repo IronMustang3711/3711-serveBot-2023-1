@@ -130,6 +130,14 @@ zeroBtn.onTrue(new SetGyro( m_drivetrainSubsystem, 0 ));
 final JoystickButton crossBtn = new JoystickButton(m_controller_one, 8);        
 crossBtn.whileTrue(new CrossRamp(m_drivetrainSubsystem));  
 
+// test new cone pickup 
+final JoystickButton ConeDrive2Btn = new JoystickButton(m_controller_one, 9);        
+ConeDrive2Btn.whileTrue(new Drive2Cone2(m_drivetrainSubsystem, m_clamp));
+
+// test new cone scoring 
+final JoystickButton PostDriveBtn = new JoystickButton(m_controller_one, 11);        
+PostDriveBtn.whileTrue(new Drive2Post(m_drivetrainSubsystem, m_clamp));
+
 final JoystickButton ConeDriveBtn = new JoystickButton(m_controller_one, 4);        
 ConeDriveBtn.whileTrue(new Drive2Cone(m_drivetrainSubsystem, 0.5));
 
