@@ -91,7 +91,7 @@ public class Drive2Cone2 extends CommandBase {
         if ((Timer.getFPGATimestamp() - startTime) < .6) {
           m_clamp.drive(0.7); // clamp it
         } else { // got it clamped, backup
-          m_clamp.drive(0.1); // hold clamp
+          m_clamp.drive(0.05); // hold clamp
           stage = 3;
           m_drivetrainSubsystem.drive(new ChassisSpeeds(-0.4, 0, 0));
           startTime = Timer.getFPGATimestamp(); // start timer
@@ -113,5 +113,6 @@ public class Drive2Cone2 extends CommandBase {
   @Override
   public void end(boolean interrupted) { // stop drive
     m_drivetrainSubsystem.drive(new ChassisSpeeds(0.0, 0.0, 0.0));
+    m_clamp.drive(0.05);
   }
 }

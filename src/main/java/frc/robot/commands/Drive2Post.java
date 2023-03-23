@@ -64,9 +64,9 @@ public class Drive2Post extends CommandBase {
 
       switch (stage) {
         case 0:
-          if (target.getArea() < 1.5) { // close if post reflector is small 1.5% of view <<<<<<<<<<<<<<<<<<<<
+          if (target.getArea() < 1) { // close if post reflector is small 1.5% of view <<<<<<<<<<<<<<<<<<<<
             // keep steering toward post
-            m_drivetrainSubsystem.drive(new ChassisSpeeds(0.4, 0, turnDrive));
+            m_drivetrainSubsystem.drive(new ChassisSpeeds(0.4, turnDrive, 0));
           } else { // ok we are close, slow down
             stage = 1;
           }
@@ -75,7 +75,7 @@ public class Drive2Post extends CommandBase {
         case 1: // getting close
           if (target.getArea() < 2.8) { // close, slow down, but keep steering <<<<<<<<<<<<<<<<<<
             m_drivetrainSubsystem.drive(new ChassisSpeeds(0.20, 0, turnDrive));
-          } else { // on target, stop
+          } else { // on target, stoptur
             stage = 2;  // may want to open and backup if this works  stage = 2;
             startTime = Timer.getFPGATimestamp(); // start timer
             m_drivetrainSubsystem.drive(new ChassisSpeeds(0.0, 0, 0));
@@ -95,10 +95,12 @@ public class Drive2Post extends CommandBase {
         case 3: // now backup
           if ((Timer.getFPGATimestamp() - startTime) < .3) {
             m_drivetrainSubsystem.drive(new ChassisSpeeds(-0.4, 0, 0));
+            m_clamp.drive(0);
           } else { // should be clear stop
             stage = 10; // may want to do auto stow sometime.
             m_drivetrainSubsystem.drive(new ChassisSpeeds(0.0, 0, 0));
             startTime = Timer.getFPGATimestamp(); // start timer
+            
           }
           break;
       }
@@ -108,5 +110,6 @@ public class Drive2Post extends CommandBase {
   @Override
   public void end(boolean interrupted) { // stop drive
     m_drivetrainSubsystem.drive(new ChassisSpeeds(0.0, 0.0, 0.0));
+    
   }
 }
