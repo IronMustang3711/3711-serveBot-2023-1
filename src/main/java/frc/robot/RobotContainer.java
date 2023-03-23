@@ -130,19 +130,21 @@ zeroBtn.onTrue(new SetGyro( m_drivetrainSubsystem, 0 ));
 final JoystickButton crossBtn = new JoystickButton(m_controller_one, 10);        
 crossBtn.whileTrue(new CrossRamp(m_drivetrainSubsystem));  
 
-// test new cone pickup 
-final JoystickButton ConeDrive2Btn = new JoystickButton(m_controller_one, 4);        
-ConeDrive2Btn.whileTrue(new Drive2Cone2(m_drivetrainSubsystem, m_clamp));
-
-// test new cone scoring 
 final JoystickButton PostDriveBtn = new JoystickButton(m_controller_one, 3);        
 PostDriveBtn.whileTrue(new Drive2Post(m_drivetrainSubsystem, m_clamp));
 
-final JoystickButton ConeDriveBtn = new JoystickButton(m_controller_one, 9);        
+final JoystickButton ConeDrive2Btn = new JoystickButton(m_controller_one, 4);   // new     
+ConeDrive2Btn.whileTrue(new Drive2Cone2(m_drivetrainSubsystem, m_clamp));
+
+final JoystickButton ConeDriveBtn = new JoystickButton(m_controller_one, 9);    // old    
 ConeDriveBtn.whileTrue(new Drive2Cone(m_drivetrainSubsystem, 0.5));
 
-final JoystickButton CubeDriveBtn = new JoystickButton(m_controller_one, 6);        
+final JoystickButton CubeDrive2Btn = new JoystickButton(m_controller_one, 6);  // new      
+CubeDrive2Btn.whileTrue(new Drive2Cube2(m_drivetrainSubsystem, m_clamp));
+
+final JoystickButton CubeDriveBtn = new JoystickButton(m_controller_one, 8);    // old    
 CubeDriveBtn.whileTrue(new Drive2Cube(m_drivetrainSubsystem, 0.5));
+
 
 final JoystickButton Heading180Btn = new JoystickButton(m_controller_one, 2);
 Heading180Btn.whileTrue(new FixedHeadingCommand(
