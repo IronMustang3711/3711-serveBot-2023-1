@@ -38,6 +38,8 @@ public class Drive2Cone2 extends CommandBase {
   public void initialize() {
     camera.setPipelineIndex(0); // select cone targeting
     stage = 0;
+    SmartDashboard.putNumber("Target Yaw3", 45);
+
 
   }
 
@@ -53,9 +55,9 @@ public class Drive2Cone2 extends CommandBase {
           PhotonTrackedTarget target;
           target = result.getBestTarget();
           double yaw = target.getYaw();
-          SmartDashboard.putNumber("Target Yaw", yaw);
+          SmartDashboard.putNumber("Target Yaw2", yaw);
 
-          turnDrive = -yaw / 50; // this is the proportional constant
+          turnDrive = -(yaw - 15) / 50; // this is the proportional constant
           if (turnDrive > turnLimit)// limit the drive to +/- 0.5
             turnDrive = turnLimit;
           else if (turnDrive < -turnLimit) {
@@ -65,7 +67,7 @@ public class Drive2Cone2 extends CommandBase {
     
           if (target.getArea() < 5) { // close if cone is 5% of view
             // keep steering toward cone
-            m_drivetrainSubsystem.drive(new ChassisSpeeds(0.7, 0, turnDrive));
+            m_drivetrainSubsystem.drive(new ChassisSpeeds(0.9, 0, turnDrive));
           } else {
             stage = 1;  // ok we are close, slow down
             startTime = Timer.getFPGATimestamp(); // start timer
@@ -99,8 +101,8 @@ public class Drive2Cone2 extends CommandBase {
         break;
 
       case 3:  // clamped, now backup
-        if ((Timer.getFPGATimestamp() - startTime) < .3) {
-          m_drivetrainSubsystem.drive(new ChassisSpeeds(-0.4, 0, 0));
+        if ((Timer.getFPGATimestamp() - startTime) < 1.1) {
+          m_drivetrainSubsystem.drive(new ChassisSpeeds(-0.5, 0, 0));
         } else { // should be clear stop
           stage = 10;  // may want to do auto stow sometime.
           m_drivetrainSubsystem.drive(new ChassisSpeeds(0.0, 0, 0));

@@ -54,7 +54,7 @@ public class ArmsLevel2 extends CommandBase {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        m_arms.setLEDRelays(false, true, false, false); // %r 2-26
+        m_arms.setLEDRelays(false, true, false, true); // #4 is for cam LEDs
     }
 
     // Called every time the scheduler runs while the command is scheduled.

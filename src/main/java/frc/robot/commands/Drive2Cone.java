@@ -50,7 +50,7 @@ public class Drive2Cone extends CommandBase {
             double yaw = target.getYaw();
             SmartDashboard.putNumber("Target Yaw", yaw);
 
-            turnDrive = -yaw / 50; // this is the proportional constant
+            turnDrive = -(yaw -15) / 50; // this is the proportional constant
             if (turnDrive > turnLimit)// limit the drive to +/- 0.5
                 turnDrive = turnLimit;
             else if (turnDrive < -turnLimit)

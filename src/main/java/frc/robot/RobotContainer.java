@@ -68,8 +68,8 @@ public class RobotContainer {
 
     // Configure autonomous sendable chooser
    // m_chooser.setDefaultOption("Autonomous Command", new AutonomousCommand());
-   m_chooser.setDefaultOption("Climb Ramp", new AutoSequence2(m_arms, m_clamp, m_drivetrainSubsystem)); 
-   m_chooser.addOption("Exit Community", new AutoSequence2(m_arms, m_clamp, m_drivetrainSubsystem));  // not auto 1
+   m_chooser.setDefaultOption("exit&Balance", new AutoSequence3(m_arms, m_clamp, m_drivetrainSubsystem)); 
+   m_chooser.addOption("Balance", new AutoSequence2(m_arms, m_clamp, m_drivetrainSubsystem));  // not auto 1
 
     SmartDashboard.putData("Auto Mode", m_chooser);
 
@@ -127,18 +127,18 @@ zeroBtn.onTrue(new SetGyro( m_drivetrainSubsystem, 0 ));
 // final JoystickButton driveBtn = new JoystickButton(m_controller_one, 7);        
 // driveBtn.whileTrue(new DriveDistance( m_drivetrainSubsystem, -1 ));  
 
-final JoystickButton crossBtn = new JoystickButton(m_controller_one, 8);        
+final JoystickButton crossBtn = new JoystickButton(m_controller_one, 10);        
 crossBtn.whileTrue(new CrossRamp(m_drivetrainSubsystem));  
 
 // test new cone pickup 
-final JoystickButton ConeDrive2Btn = new JoystickButton(m_controller_one, 9);        
+final JoystickButton ConeDrive2Btn = new JoystickButton(m_controller_one, 4);        
 ConeDrive2Btn.whileTrue(new Drive2Cone2(m_drivetrainSubsystem, m_clamp));
 
 // test new cone scoring 
-final JoystickButton PostDriveBtn = new JoystickButton(m_controller_one, 11);        
+final JoystickButton PostDriveBtn = new JoystickButton(m_controller_one, 3);        
 PostDriveBtn.whileTrue(new Drive2Post(m_drivetrainSubsystem, m_clamp));
 
-final JoystickButton ConeDriveBtn = new JoystickButton(m_controller_one, 4);        
+final JoystickButton ConeDriveBtn = new JoystickButton(m_controller_one, 9);        
 ConeDriveBtn.whileTrue(new Drive2Cone(m_drivetrainSubsystem, 0.5));
 
 final JoystickButton CubeDriveBtn = new JoystickButton(m_controller_one, 6);        

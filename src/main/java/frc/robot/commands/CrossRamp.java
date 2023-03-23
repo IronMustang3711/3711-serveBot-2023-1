@@ -71,7 +71,7 @@ public class CrossRamp extends CommandBase {
                     ((Timer.getFPGATimestamp() - startTime) > 1.5)) 
             {
                 startTime = Timer.getFPGATimestamp();
-                m_drivetrainSubsystem.drive(new ChassisSpeeds(-0.4, 0.0, 0.0)); // slow down
+                m_drivetrainSubsystem.drive(new ChassisSpeeds(-0.6, 0.0, 0.0)); // slow down
                 stage = 3;
             }
         
@@ -79,7 +79,7 @@ public class CrossRamp extends CommandBase {
 
         case 3: // exit community
 
-            if ((Timer.getFPGATimestamp() - startTime) > 0.5) // wait time to exit community <<<<<<<<<<<<<<<<<<
+            if ((Timer.getFPGATimestamp() - startTime) > 0.6) // wait time to exit community <<<<<<<<<<<<<<<<<<
             { // reverse and go back up the platform
                 stage = 4;
                 m_drivetrainSubsystem.drive(new ChassisSpeeds(1.0, 0.0, 0.0)); // slow down
@@ -88,19 +88,19 @@ public class CrossRamp extends CommandBase {
             break;
 
         case 4: // go back up the ramp
-            if ((pitch < -10) ||  // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-            ((Timer.getFPGATimestamp() - startTime) > 2.0)) 
+            if ((pitch < -7) ||  // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+            ((Timer.getFPGATimestamp() - startTime) > 4.0)) 
             {             
                 stage = 5; // on ramp, keep going
-                m_drivetrainSubsystem.drive(new ChassisSpeeds(0.6, 0.0, 0.0)); // slow down
+                m_drivetrainSubsystem.drive(new ChassisSpeeds(0.8, 0.0, 0.0)); // slow down
                 startTime = Timer.getFPGATimestamp();
             }
             break;
 
         case 5: // Platform is starting to level
           
-                if ((pitch > -8) || // pitch is dropping <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-                  ((Timer.getFPGATimestamp() - startTime) > 2.0)) 
+                if ((pitch > -1) /*||*/  // pitch is dropping <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+                  /*((Timer.getFPGATimestamp() - startTime) > 3.0)*/) 
                 {
                     stage = 6; // on platform, reverse a little bit.
                     m_drivetrainSubsystem.drive(new ChassisSpeeds(-0.4, 0, 0));

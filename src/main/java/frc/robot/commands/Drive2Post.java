@@ -20,7 +20,7 @@ public class Drive2Post extends CommandBase {
 
   double startTime;
 
-  PhotonCamera camera = new PhotonCamera("usb1"); // %rod
+  PhotonCamera camera = new PhotonCamera("usb2"); // %rod
   double turnLimit = 0.5;
   double m_fwdLimit = 0.3; // may be parameter later...........
   int stage = 0;
@@ -66,17 +66,17 @@ public class Drive2Post extends CommandBase {
         case 0:
           if (target.getArea() < 1.5) { // close if post reflector is small 1.5% of view <<<<<<<<<<<<<<<<<<<<
             // keep steering toward post
-            m_drivetrainSubsystem.drive(new ChassisSpeeds(0.7, 0, turnDrive));
+            m_drivetrainSubsystem.drive(new ChassisSpeeds(0.4, 0, turnDrive));
           } else { // ok we are close, slow down
             stage = 1;
           }
           break;
 
         case 1: // getting close
-          if (target.getArea() < 2.0) { // close, slow down, but keep steering <<<<<<<<<<<<<<<<<<
-            m_drivetrainSubsystem.drive(new ChassisSpeeds(0.30, 0, turnDrive));
+          if (target.getArea() < 2.8) { // close, slow down, but keep steering <<<<<<<<<<<<<<<<<<
+            m_drivetrainSubsystem.drive(new ChassisSpeeds(0.20, 0, turnDrive));
           } else { // on target, stop
-            stage = 10;  // may want to open and backup if this works  stage = 2;
+            stage = 2;  // may want to open and backup if this works  stage = 2;
             startTime = Timer.getFPGATimestamp(); // start timer
             m_drivetrainSubsystem.drive(new ChassisSpeeds(0.0, 0, 0));
           }
