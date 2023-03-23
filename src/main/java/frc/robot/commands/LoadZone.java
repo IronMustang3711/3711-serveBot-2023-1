@@ -54,8 +54,7 @@ public class LoadZone extends CommandBase {   // %r5
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        m_arms.setLEDRelays(true,true,true,false);  // bright
- 
+        m_arms.setSignLEDs(4); // bright
     }
 
     // Called every time the scheduler runs while the command is scheduled.

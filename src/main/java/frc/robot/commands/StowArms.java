@@ -56,9 +56,9 @@ public class StowArms extends CommandBase {
     @Override
     public void initialize() {
       if (DriverStation.getAlliance() == DriverStation.Alliance.Red)
-        m_arms.setLEDRelays(true,false,false,false);  // red
+        m_arms.setSignLEDs(1);  // red
       else
-        m_arms.setLEDRelays(false,false,true,false);  // blue
+        m_arms.setSignLEDs(3);   // blue
     }
 
     // Called every time the scheduler runs while the command is scheduled.

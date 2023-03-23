@@ -42,15 +42,13 @@ public class Close extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-      m_clamp.drive(0.5);
-  
-
+      m_clamp.drive(0.7);  // fast while buttpon held
     }
 
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-        m_clamp.drive(0.05);
+        m_clamp.drive(0.05); // low power when button released
     }
 
     // Returns true when the command should end.
