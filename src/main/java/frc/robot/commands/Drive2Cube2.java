@@ -1,4 +1,4 @@
-// copied from drive2cone.  Added close clamp and backup 21-mar-2023
+// copied from drive2cone2.  Added close clamp and backup 21-mar-2023
 
 package frc.robot.commands;
 
@@ -14,7 +14,7 @@ import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonTrackedTarget;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class Drive2Cone2 extends CommandBase {
+public class Drive2Cube2 extends CommandBase {
   private final DrivetrainSubsystem m_drivetrainSubsystem;
   private final Clamp m_clamp;
 
@@ -25,7 +25,7 @@ public class Drive2Cone2 extends CommandBase {
   double m_fwdLimit = 0.3; // may be parameter later...........
   int stage = 0;
 
-  public Drive2Cone2(DrivetrainSubsystem drivetrainSubsystem, Clamp clampSubsystem) {
+  public Drive2Cube2(DrivetrainSubsystem drivetrainSubsystem, Clamp clampSubsystem) {
 
     m_drivetrainSubsystem = drivetrainSubsystem;
     m_clamp = clampSubsystem;
@@ -36,7 +36,7 @@ public class Drive2Cone2 extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    camera.setPipelineIndex(0); // select cone targeting
+    camera.setPipelineIndex(1); // select cybe targeting
     stage = 0;
   
   }
@@ -63,7 +63,7 @@ public class Drive2Cone2 extends CommandBase {
           }
 
     
-          if (target.getArea() < 5) { // close if cone is 5% of view
+          if (target.getArea() < 10) { // close if cube is 10% of view
             // keep steering toward cone
             m_drivetrainSubsystem.drive(new ChassisSpeeds(0.9, 0, turnDrive));
           } else {
@@ -91,7 +91,7 @@ public class Drive2Cone2 extends CommandBase {
         if ((Timer.getFPGATimestamp() - startTime) < .6) {
           m_clamp.drive(0.7); // clamp it
         } else { // got it clamped, backup
-          m_clamp.drive(0.1); // hold clamp
+          m_clamp.drive(0.05); // hold clamp
           stage = 3;
           m_drivetrainSubsystem.drive(new ChassisSpeeds(-0.4, 0, 0));
           startTime = Timer.getFPGATimestamp(); // start timer

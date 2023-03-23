@@ -23,6 +23,8 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.AddressableLED;
+import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 
 
 
@@ -46,9 +48,12 @@ public class Arms extends SubsystemBase {
   private SparkMaxPIDController pidElbow;
   private RelativeEncoder elbow_encoder;
 
-  private DigitalOutput m_redLED; // relays 1-4
-  private DigitalOutput m_greenLED;
-  private DigitalOutput m_blueLED;
+
+  private AddressableLED m_led;
+  private AddressableLEDBuffer m_ledBuffer;
+  private DigitalOutput m_relay1;// relays 1-4
+  private DigitalOutput m_relay2;
+  private DigitalOutput m_relay3;
   private DigitalOutput m_relay4;
   
   public Arms() {
@@ -96,15 +101,20 @@ public class Arms extends SubsystemBase {
     pidElbow.setSmartMotionMaxAccel(10000, smartMotionSlot);
     pidElbow.setSmartMotionAllowedClosedLoopError(allowedErr, smartMotionSlot); // ?????????????
 
+    // setup LED Sign control.  Copied for LED Example code 
+    m_led = new AddressableLED(9);
+    m_ledBuffer = new AddressableLEDBuffer(80);  // should be about 90 leds
+    m_led.setLength(m_ledBuffer.getLength());
+
+    // Set the data
+    m_led.setData(m_ledBuffer);
+    m_led.start();
+
     // setup LED relays.  Controlled by DIO 0-3 
-    m_redLED = new DigitalOutput(0);  // relays 1-4
-    m_greenLED = new DigitalOutput(1);
-    m_blueLED = new DigitalOutput(2);
+    m_relay1 = new DigitalOutput(0);
+    m_relay2 = new DigitalOutput(1);
+    m_relay3 = new DigitalOutput(2);
     m_relay4 = new DigitalOutput(3);
-    if (DriverStation.getAlliance() == DriverStation.Alliance.Red)
-      m_redLED.set(true);
-    else
-      m_blueLED.set(true);
   }
 
   @Override
@@ -149,10 +159,59 @@ public class Arms extends SubsystemBase {
 
   public void setLEDRelays (boolean relay1,boolean relay2,
   boolean relay3,boolean relay4){
-    m_redLED.set(relay1);  // red LED string
-    m_greenLED.set(relay2);
-    m_blueLED.set(relay3);
+    m_relay1.set(relay1);
+    m_relay2.set(relay2);
+    m_relay3.set(relay3);
     m_relay4.set(relay4);
   }
-  
+  public void setSignLEDs (int mode){
+
+
+    switch (mode) { 
+      case 0:
+      color(0,0,0);  // off
+      break;
+      case 1:
+      color(255,0,0); // red
+      break;
+      case 2:
+      color(0,255,0); // green
+      break;
+      case 3:
+      color(0,0,255); // blue
+      break;
+      case 4:
+      color(200,200,200);  // white
+      break;
+      case 5:
+  //    rainbow();
+      break;
+    }
+
+    // Set the LEDs
+    m_led.setData(m_ledBuffer);
+  }
+
+  // private void rainbow() {
+  //   // For every pixel
+  //   for (var i = 0; i < m_ledBuffer.getLength(); i++) {
+  //     // Calculate the hue - hue is easier for rainbows because the color
+  //     // shape is a circle so only one value needs to precess
+  //     final var hue = (m_rainbowFirstPixelHue + (i * 180 / m_ledBuffer.getLength())) % 180;
+  //     // Set the value
+  //     m_ledBuffer.setHSV(i, hue, 255, 128);
+  //   }
+  //   // Increase by to make the rainbow "move"
+  //   m_rainbowFirstPixelHue += 3;
+  //   // Check bounds
+  //   m_rainbowFirstPixelHue %= 180;
+  // }
+
+  private void color(int red, int green, int blue) {
+    // For every pixel
+    for (var i = 0; i < m_ledBuffer.getLength(); i++) {
+      m_ledBuffer.setRGB(i,red,green,blue);
+    }
+
+  }
 }

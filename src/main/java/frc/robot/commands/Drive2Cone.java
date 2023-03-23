@@ -49,7 +49,7 @@ public class Drive2Cone extends CommandBase {
             target = result.getBestTarget();
             double yaw = target.getYaw();
             SmartDashboard.putNumber("Target Yaw", yaw);
-
+          // since camera is off center and angled, yaw needs a 15 degree correction
             turnDrive = -(yaw -15) / 50; // this is the proportional constant
             if (turnDrive > turnLimit)// limit the drive to +/- 0.5
                 turnDrive = turnLimit;
