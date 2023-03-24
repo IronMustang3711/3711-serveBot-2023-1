@@ -39,6 +39,9 @@ public class RobotContainer {
   private final Joystick joystick = new Joystick(2);  //%r
   
 
+  private int gridLevel = 0; 
+
+
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
   /**
@@ -101,12 +104,18 @@ stowBtn.onTrue(new StowArms( m_arms ).withInterruptBehavior(InterruptionBehavior
 
 final JoystickButton level3Btn = new JoystickButton(joystick, 8);     // level 3 upper   
 level3Btn.onTrue(new ArmsLevel3( m_arms ).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+if (level3Btn.getAsBoolean())
+  gridLevel = 3;
 
 final JoystickButton level2Btn = new JoystickButton(joystick, 10);    // level 2 middle 
 level2Btn.onTrue(new ArmsLevel2( m_arms ).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+if (level3Btn.getAsBoolean())
+  gridLevel = 2;
 
 final JoystickButton level1Btn = new JoystickButton(joystick, 12);        // leve1 1 carpet
 level1Btn.onTrue(new ArmsLevel1( m_arms ).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+if (level3Btn.getAsBoolean())
+  gridLevel = 1;
 
 final JoystickButton GroundBtn = new JoystickButton(joystick, 9);        // Ground Pickup
 GroundBtn.onTrue(new GroundPickup( m_arms ).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
@@ -131,7 +140,7 @@ final JoystickButton crossBtn = new JoystickButton(m_controller_one, 10);
 crossBtn.whileTrue(new CrossRamp(m_drivetrainSubsystem));  
 
 final JoystickButton PostDriveBtn = new JoystickButton(m_controller_one, 3);        
-PostDriveBtn.whileTrue(new Drive2Post(m_drivetrainSubsystem, m_clamp));
+PostDriveBtn.whileTrue(new Drive2Post(m_drivetrainSubsystem, m_clamp, gridLevel));  // added grid level 
 
 final JoystickButton ConeDrive2Btn = new JoystickButton(m_controller_one, 4);   // new     
 ConeDrive2Btn.whileTrue(new Drive2Cone2(m_drivetrainSubsystem, m_clamp));

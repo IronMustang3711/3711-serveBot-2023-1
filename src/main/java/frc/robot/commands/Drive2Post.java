@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.Timer;
 
 import java.util.function.DoubleSupplier;
 
+import org.opencv.features2d.KAZE;
 import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonTrackedTarget;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -17,18 +18,21 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Drive2Post extends CommandBase {
   private final DrivetrainSubsystem m_drivetrainSubsystem;
   private final Clamp m_clamp;
+  private final int m_target;
 
   double startTime;
+  double level2DelayStartTime;
 
   PhotonCamera camera = new PhotonCamera("usb2"); // %rod
   double turnLimit = 0.5;
   double m_fwdLimit = 0.3; // may be parameter later...........
   int stage = 0;
 
-  public Drive2Post(DrivetrainSubsystem drivetrainSubsystem, Clamp clampSubsystem) {
+  public Drive2Post(DrivetrainSubsystem drivetrainSubsystem, Clamp clampSubsystem, int target) {
 
     m_drivetrainSubsystem = drivetrainSubsystem;
     m_clamp = clampSubsystem;
+    m_target = target;
 
     addRequirements(drivetrainSubsystem);
   }
@@ -48,11 +52,26 @@ public class Drive2Post extends CommandBase {
     // camera.setPipelineIndex(0);
     var result = camera.getLatestResult(); // do we see a post?
     double turnDrive = 0;
-
+    
     if (result.hasTargets()) {
       PhotonTrackedTarget target;
       target = result.getBestTarget();
       double yaw = target.getYaw();
+      double area = target.getArea();
+
+      // if targeting level 2 post. The target gets out of camera view before
+      // area reaches expected size. So we look for a smaller area, then start
+      // a timer to keep going. This may not work well
+      if (m_target == 2) { // looking for level 2 post
+        if (area < 2.0)
+          level2DelayStartTime = Timer.getFPGATimestamp(); // update timer
+        else { // getting close, now use a timer
+          if ((Timer.getFPGATimestamp() - level2DelayStartTime) < .3) {
+            area = 5; // this will trigger a stop during stage 1 below.
+          }
+        }
+      } 
+
       SmartDashboard.putNumber("Target Yaw", yaw);
 
       turnDrive = -yaw / 50; // this is the proportional constant
@@ -64,7 +83,7 @@ public class Drive2Post extends CommandBase {
 
       switch (stage) {
         case 0:
-          if (target.getArea() < 1) { // close if post reflector is small 1.5% of view <<<<<<<<<<<<<<<<<<<<
+          if (area < 1) { // close if post reflector is small 1.% of view <<<<<<<<<<<<<<<<<<<<
             // keep steering toward post
             m_drivetrainSubsystem.drive(new ChassisSpeeds(0.4, turnDrive, 0));
           } else { // ok we are close, slow down
@@ -73,7 +92,7 @@ public class Drive2Post extends CommandBase {
           break;
 
         case 1: // getting close
-          if (target.getArea() < 2.8) { // close, slow down, but keep steering <<<<<<<<<<<<<<<<<<
+          if (area < 2.8) { // close, slow down, but keep steering <<<<<<<<<<<<<<<<<<
             m_drivetrainSubsystem.drive(new ChassisSpeeds(0.20, 0, turnDrive));
           } else { // on target, stoptur
             stage = 2;  // may want to open and backup if this works  stage = 2;
@@ -111,6 +130,7 @@ public class Drive2Post extends CommandBase {
   @Override
   public void end(boolean interrupted) { // stop drive
     m_drivetrainSubsystem.drive(new ChassisSpeeds(0.0, 0.0, 0.0));
-    
+    if (stage >= 2)  // be certain to shut of clamp drive if sequence aborted.
+      m_clamp.drive(0);
   }
 }
