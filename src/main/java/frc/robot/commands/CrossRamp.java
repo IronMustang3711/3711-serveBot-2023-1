@@ -92,7 +92,7 @@ public class CrossRamp extends CommandBase {
             ((Timer.getFPGATimestamp() - startTime) > 4.0)) 
             {             
                 stage = 5; // on ramp, keep going
-                m_drivetrainSubsystem.drive(new ChassisSpeeds(0.8, 0.0, 0.0)); // slow down
+                m_drivetrainSubsystem.drive(new ChassisSpeeds(0.5, 0.0, 0.0)); // slow down
                 startTime = Timer.getFPGATimestamp();
             }
             break;

@@ -89,13 +89,14 @@ public class Drive2Post extends CommandBase {
             stage = 3;
             m_drivetrainSubsystem.drive(new ChassisSpeeds(-0.4, 0, 0));
             startTime = Timer.getFPGATimestamp(); // start timer
+            m_clamp.drive(0);
           }
           break;
 
         case 3: // now backup
           if ((Timer.getFPGATimestamp() - startTime) < .3) {
             m_drivetrainSubsystem.drive(new ChassisSpeeds(-0.4, 0, 0));
-            m_clamp.drive(0);
+            
           } else { // should be clear stop
             stage = 10; // may want to do auto stow sometime.
             m_drivetrainSubsystem.drive(new ChassisSpeeds(0.0, 0, 0));
