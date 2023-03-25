@@ -6,6 +6,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.Clamp;
+import frc.robot.subsystems.Arms;
 import edu.wpi.first.wpilibj.Timer;
 
 import java.util.function.DoubleSupplier;
@@ -18,7 +19,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Drive2Post extends CommandBase {
   private final DrivetrainSubsystem m_drivetrainSubsystem;
   private final Clamp m_clamp;
-  private final int m_target;
+  private final Arms m_arms;
 
   double startTime;
   double level2DelayStartTime;
@@ -27,12 +28,15 @@ public class Drive2Post extends CommandBase {
   double turnLimit = 0.5;
   double m_fwdLimit = 0.3; // may be parameter later...........
   int stage = 0;
+  int postLevel = 0;
+  double finalArea = 3;  
 
-  public Drive2Post(DrivetrainSubsystem drivetrainSubsystem, Clamp clampSubsystem, int target) {
+  public Drive2Post(DrivetrainSubsystem drivetrainSubsystem, Clamp clampSubsystem, Arms armsSubsystem) {
 
     m_drivetrainSubsystem = drivetrainSubsystem;
     m_clamp = clampSubsystem;
-    m_target = target;
+    m_arms = armsSubsystem;
+
 
     addRequirements(drivetrainSubsystem);
   }
@@ -41,10 +45,13 @@ public class Drive2Post extends CommandBase {
   @Override
   public void initialize() {
     camera.setPipelineIndex(2); // select post targeting
-    // turn on LEDs
-
-    stage = 0;
-
+    postLevel = m_arms.getPostLevel();
+    if (postLevel == 2)
+      finalArea = 2.5;  // if targetting mid level post
+    else
+      finalArea = 2.8;  // otherwise targetting level 3 post
+    stage = 0;;
+    SmartDashboard.putNumber("final area", finalArea);
   }
 
   @Override
@@ -58,19 +65,6 @@ public class Drive2Post extends CommandBase {
       target = result.getBestTarget();
       double yaw = target.getYaw();
       double area = target.getArea();
-
-      // if targeting level 2 post. The target gets out of camera view before
-      // area reaches expected size. So we look for a smaller area, then start
-      // a timer to keep going. This may not work well
-      if (m_target == 2) { // looking for level 2 post
-        if (area < 2.0)
-          level2DelayStartTime = Timer.getFPGATimestamp(); // update timer
-        else { // getting close, now use a timer
-          if ((Timer.getFPGATimestamp() - level2DelayStartTime) < .3) {
-            area = 5; // this will trigger a stop during stage 1 below.
-          }
-        }
-      } 
 
       SmartDashboard.putNumber("Target Yaw", yaw);
 
@@ -92,9 +86,9 @@ public class Drive2Post extends CommandBase {
           break;
 
         case 1: // getting close
-          if (area < 2.8) { // close, slow down, but keep steering <<<<<<<<<<<<<<<<<<
+          if (area < finalArea) { // close, slow down, but keep steering <<<<<<<<<<<<<<<<<<
             m_drivetrainSubsystem.drive(new ChassisSpeeds(0.20, 0, turnDrive));
-          } else { // on target, stoptur
+          } else { // on target, stop turn
             stage = 2;  // may want to open and backup if this works  stage = 2;
             startTime = Timer.getFPGATimestamp(); // start timer
             m_drivetrainSubsystem.drive(new ChassisSpeeds(0.0, 0, 0));

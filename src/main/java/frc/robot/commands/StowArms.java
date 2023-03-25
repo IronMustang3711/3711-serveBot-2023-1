@@ -55,7 +55,8 @@ public class StowArms extends CommandBase {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-
+        m_arms.setPostLevel(0);
+  
         m_arms.setLEDRelays(false, false, false, false); 
 
         if (DriverStation.getAlliance() == DriverStation.Alliance.Red)

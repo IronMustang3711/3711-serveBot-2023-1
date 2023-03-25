@@ -56,6 +56,7 @@ public class ArmsLevel2 extends CommandBase {
     public void initialize() {
         m_arms.setSignLEDs(2);  // green
         m_arms.setLEDRelays(false, false, false, true); // #4 is for cam LEDs
+        m_arms.setPostLevel(2);
     }
 
     // Called every time the scheduler runs while the command is scheduled.

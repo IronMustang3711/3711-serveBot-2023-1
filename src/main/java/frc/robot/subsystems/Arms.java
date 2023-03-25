@@ -56,6 +56,8 @@ public class Arms extends SubsystemBase {
   private DigitalOutput m_relay3;
   private DigitalOutput m_relay4;
   
+  private int postLevel;
+
   public Arms() {
     // initialize SPARK MAX neo500 w/ 100:1
     arm_motor = new CANSparkMax(ArmID1, MotorType.kBrushless);
@@ -143,10 +145,19 @@ public class Arms extends SubsystemBase {
     SmartDashboard.putNumber("Elbow Current", elbow_motor.getOutputCurrent());
 
   }
-
+  
   public void drive(double armsSpeed, double elbowSpeed) {
     arm_motor.set(armsSpeed);
     elbow_motor.set(elbowSpeed);
+  }
+
+  // this is an attempt to pass the post level 2 or 3 to the drive to post command
+  public void setPostLevel (int level){
+    postLevel = level;
+  }
+
+  public int getPostLevel() {
+    return postLevel;
   }
 
   public double getElbowPosition() {
