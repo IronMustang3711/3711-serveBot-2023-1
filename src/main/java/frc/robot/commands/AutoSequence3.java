@@ -26,10 +26,18 @@ public class AutoSequence3 extends SequentialCommandGroup {
     addCommands(
 
     new SequentialCommandGroup(
+      new SetGyro(m_drivetrainSubsystem, 180), // Robot starts aimed at drivers
+      new Close(clampSystem).withTimeout(0.3), // clamp cube
+      new ArmsLevel3Cube(armSystem),
+      new ParallelCommandGroup(
+        new Open(clampSystem).withTimeout(0.3), // drop cube
+        new LoadZone(armSystem).withTimeout(0.5)), // raise to be clear
 
-      new AutoScore(armSystem, clampSystem, m_drivetrainSubsystem),
-      new CrossRamp( m_drivetrainSubsystem ).withTimeout(9.0), // give it 9 seconds <<<<<<<<<<<<<<     
-      new StowArms(armSystem))
-     );
+      new ParallelCommandGroup(
+        new StowArms(armSystem),
+        new CrossRamp( m_drivetrainSubsystem ).withTimeout(9.0)) // give it 9 seconds <<<<<<<<<<<<<<     
+
+     )
+    );
   }
 }
