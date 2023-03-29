@@ -43,7 +43,8 @@ public class Drive2Post extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
+  public void initialize() {      
+    m_arms.setLEDRelays(false, false, false, true); // #4 is for cam LEDs
     camera.setPipelineIndex(2); // select post targeting
     postLevel = m_arms.getPostLevel();
     if (postLevel == 2)
@@ -124,6 +125,7 @@ public class Drive2Post extends CommandBase {
   @Override
   public void end(boolean interrupted) { // stop drive
     m_drivetrainSubsystem.drive(new ChassisSpeeds(0.0, 0.0, 0.0));
+    m_arms.setLEDRelays(false, false, false, false); // #4 is for cam LEDs
     if (stage >= 2)  // be certain to shut of clamp drive if sequence aborted.
       m_clamp.drive(0);
   }

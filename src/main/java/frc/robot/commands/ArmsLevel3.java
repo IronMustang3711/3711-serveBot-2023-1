@@ -55,7 +55,7 @@ public class ArmsLevel3 extends CommandBase {
     @Override
     public void initialize() {
         m_arms.setSignLEDs(2);  // green
-        m_arms.setLEDRelays(false, false, false, true); // #4 is for cam LEDs
+//        m_arms.setLEDRelays(false, false, false, true); // #4 is for cam LEDs
         m_arms.setPostLevel(3);
     }
 
