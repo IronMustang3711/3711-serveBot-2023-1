@@ -16,7 +16,7 @@ public class ArmsLevel3Cube extends CommandBase {
     private final Arms m_arms;
     private double elbowPosition;
     private double armPosition;
-    private double elbowTarget = 77;
+    private double elbowTarget = 67;
     private double armTarget = 15;
 
     public ArmsLevel3Cube(Arms subsystem) {
@@ -57,8 +57,8 @@ public class ArmsLevel3Cube extends CommandBase {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        if ((Math.abs(elbowPosition - elbowTarget) < 2) &&  // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-                (Math.abs(armPosition - armTarget) < 2))
+        if ((Math.abs(elbowPosition - elbowTarget) < 1) &&  // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+                (Math.abs(armPosition - armTarget) < 1))
             return true;
         else
             return false;

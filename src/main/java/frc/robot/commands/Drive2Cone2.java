@@ -63,7 +63,7 @@ public class Drive2Cone2 extends CommandBase {
           }
 
     
-          if (target.getArea() < 5) { // close if cone is 5% of view
+          if (target.getArea() < 4) { // close if cone is 5% of view
             // keep steering toward cone
             m_drivetrainSubsystem.drive(new ChassisSpeeds(0.9, 0, turnDrive));
           } else {

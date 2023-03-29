@@ -105,7 +105,7 @@ public class Arms extends SubsystemBase {
 
     // setup LED Sign control.  Copied for LED Example code 
     m_led = new AddressableLED(9);
-    m_ledBuffer = new AddressableLEDBuffer(80);  // should be about 90 leds
+    m_ledBuffer = new AddressableLEDBuffer(130);  // should be about 90 leds
     m_led.setLength(m_ledBuffer.getLength());
 
     // Set the data

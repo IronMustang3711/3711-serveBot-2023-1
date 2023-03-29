@@ -63,7 +63,7 @@ public class Drive2Cube2 extends CommandBase {
           }
 
     
-          if (target.getArea() < 10) { // close if cube is 10% of view
+          if (target.getArea() < 2) { // close if cube is 10% of view
             // keep steering toward cone
             m_drivetrainSubsystem.drive(new ChassisSpeeds(0.9, 0, turnDrive));
           } else {
@@ -77,7 +77,7 @@ public class Drive2Cube2 extends CommandBase {
 
       case 1: // getting close
         // slow and straight for .7 seconds
-        if ((Timer.getFPGATimestamp() - startTime) < .7) {
+        if ((Timer.getFPGATimestamp() - startTime) < .9) {
           m_drivetrainSubsystem.drive(new ChassisSpeeds(0.35, 0, 0));
         } else { // hopefully ready to clamp. Stop drive
           m_clamp.drive(0.7); // clamp it

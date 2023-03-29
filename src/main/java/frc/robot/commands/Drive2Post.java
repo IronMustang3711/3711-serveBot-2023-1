@@ -48,9 +48,9 @@ public class Drive2Post extends CommandBase {
     camera.setPipelineIndex(2); // select post targeting
     postLevel = m_arms.getPostLevel();
     if (postLevel == 2)
-      finalArea = 2.5;  // if targetting mid level post
+      finalArea = 1.8;  // if targetting mid level post
     else
-      finalArea = 2.8;  // otherwise targetting level 3 post
+      finalArea = 2.0;  // otherwise targetting level 3 post
     stage = 0;;
     SmartDashboard.putNumber("final area", finalArea);
   }
