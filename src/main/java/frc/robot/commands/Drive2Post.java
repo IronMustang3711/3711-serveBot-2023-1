@@ -60,12 +60,13 @@ public class Drive2Post extends CommandBase {
     // camera.setPipelineIndex(0);
     var result = camera.getLatestResult(); // do we see a post?
     double turnDrive = 0;
-    
+    double area = -1; // no target if area < 0
+
     if (result.hasTargets()) {
       PhotonTrackedTarget target;
       target = result.getBestTarget();
       double yaw = target.getYaw();
-      double area = target.getArea();
+      area = target.getArea();
 
       SmartDashboard.putNumber("Target Yaw", yaw);
 
@@ -75,50 +76,57 @@ public class Drive2Post extends CommandBase {
       else if (turnDrive < -turnLimit) {
         turnDrive = -turnLimit;
       }
+    }
 
-      switch (stage) {
-        case 0:
+    switch (stage) {
+      case 0:
+        if (area > 0) { // do we have the target?
           if (area < 1) { // close if post reflector is small 1.% of view <<<<<<<<<<<<<<<<<<<<
             // keep steering toward post
             m_drivetrainSubsystem.drive(new ChassisSpeeds(0.4, turnDrive, 0));
           } else { // ok we are close, slow down
             stage = 1;
           }
-          break;
+        } else { // no target, stop
+          m_drivetrainSubsystem.drive(new ChassisSpeeds(0.0, turnDrive, 0));
+        }
+        break;
 
-        case 1: // getting close
+      case 1: // getting close
+        if (area > 0) { // do we have the target?
           if (area < finalArea) { // close, slow down, but keep steering <<<<<<<<<<<<<<<<<<
             m_drivetrainSubsystem.drive(new ChassisSpeeds(0.20, 0, turnDrive));
           } else { // on target, stop turn
-            stage = 2;  // may want to open and backup if this works  stage = 2;
+            stage = 2; // may want to open and backup if this works stage = 2;
             startTime = Timer.getFPGATimestamp(); // start timer
             m_drivetrainSubsystem.drive(new ChassisSpeeds(0.0, 0, 0));
           }
-          break;
+        } else { // no target, stop
+          m_drivetrainSubsystem.drive(new ChassisSpeeds(0.0, turnDrive, 0));
+        }
+        break;
 
-        case 2: // Open clamp
-          if ((Timer.getFPGATimestamp() - startTime) < .3) {
-            m_clamp.drive(-0.6); // open clamp, drop it
-          } else { // dropped, backup
-            stage = 3;
-            m_drivetrainSubsystem.drive(new ChassisSpeeds(-0.6, 0, 0));
-            startTime = Timer.getFPGATimestamp(); // start timer
-            m_clamp.drive(0);
-          }
-          break;
+      case 2: // Open clamp
+        if ((Timer.getFPGATimestamp() - startTime) < .3) {
+          m_clamp.drive(-0.6); // open clamp, drop it
+        } else { // dropped, backup
+          stage = 3;
+          m_drivetrainSubsystem.drive(new ChassisSpeeds(-0.6, 0, 0));
+          startTime = Timer.getFPGATimestamp(); // start timer
+          m_clamp.drive(0);
+        }
+        break;
 
-        case 3: // now backup
-          if ((Timer.getFPGATimestamp() - startTime) < .6) {
-            m_drivetrainSubsystem.drive(new ChassisSpeeds(-0.6, 0, 0));
-            m_clamp.drive(0);
-          } else { // should be clear stop
-            stage = 10; // may want to do auto stow sometime.
-            m_drivetrainSubsystem.drive(new ChassisSpeeds(0.0, 0, 0));
-            startTime = Timer.getFPGATimestamp(); // start timer
-            
-          }
-          break;
-      }
+      case 3: // now backup
+        if ((Timer.getFPGATimestamp() - startTime) < .6) {
+          m_drivetrainSubsystem.drive(new ChassisSpeeds(-0.6, 0, 0));
+          m_clamp.drive(0);
+        } else { // should be clear stop
+          stage = 10; // may want to do auto stow sometime.
+          m_drivetrainSubsystem.drive(new ChassisSpeeds(0.0, 0, 0));
+          startTime = Timer.getFPGATimestamp(); // start timer
+        }
+        break;
     }
   }
 
@@ -126,7 +134,7 @@ public class Drive2Post extends CommandBase {
   public void end(boolean interrupted) { // stop drive
     m_drivetrainSubsystem.drive(new ChassisSpeeds(0.0, 0.0, 0.0));
     m_arms.setLEDRelays(false, false, false, false); // #4 is for cam LEDs
-    if (stage >= 2)  // be certain to shut of clamp drive if sequence aborted.
+    if (stage >= 2) // be certain to shut of clamp drive if sequence aborted.
       m_clamp.drive(0);
   }
 }
