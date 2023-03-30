@@ -78,9 +78,9 @@ public class Arms extends SubsystemBase {
 
     // set Motion Magic
     int smartMotionSlot = 0; // ????????????????????????????????
-    pidArm.setSmartMotionMaxVelocity(4000, smartMotionSlot);
+    pidArm.setSmartMotionMaxVelocity(5000, smartMotionSlot);
     pidArm.setSmartMotionMinOutputVelocity(0, smartMotionSlot);
-    pidArm.setSmartMotionMaxAccel(2500, smartMotionSlot);
+    pidArm.setSmartMotionMaxAccel(7000, smartMotionSlot);
     pidArm.setSmartMotionAllowedClosedLoopError(allowedErr, smartMotionSlot); // ?????????????
 
     // Neo550 w/ 210:1
@@ -98,9 +98,9 @@ public class Arms extends SubsystemBase {
     pidElbow.setOutputRange(-1, 1);
 
     // set Motion Magic
-    pidElbow.setSmartMotionMaxVelocity(10000, smartMotionSlot);
+    pidElbow.setSmartMotionMaxVelocity(11000, smartMotionSlot);
     pidElbow.setSmartMotionMinOutputVelocity(0, smartMotionSlot);
-    pidElbow.setSmartMotionMaxAccel(10000, smartMotionSlot);
+    pidElbow.setSmartMotionMaxAccel(20000, smartMotionSlot);
     pidElbow.setSmartMotionAllowedClosedLoopError(allowedErr, smartMotionSlot); // ?????????????
 
     // setup LED Sign control.  Copied for LED Example code 
