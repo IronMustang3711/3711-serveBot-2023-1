@@ -93,6 +93,7 @@ public class RobotContainer {
 final JoystickButton openBtn = new JoystickButton(joystick, 2);        
 openBtn.whileTrue(new Open( m_clamp ).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
                         
+
 final JoystickButton closeBtn = new JoystickButton(joystick, 1);        
 closeBtn.whileTrue(new Close( m_clamp ).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 

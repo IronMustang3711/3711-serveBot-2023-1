@@ -100,7 +100,7 @@ public class CrossRamp extends CommandBase {
         case 5: // Platform is starting to level
 
             if ((pitch > -7) || // pitch is dropping <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-                    ((Timer.getFPGATimestamp() - startTime) > 3.0)) {
+                    ((Timer.getFPGATimestamp() - startTime) > 4.0)) {
                 stage = 6; // on platform, reverse a little bit.
                 m_drivetrainSubsystem.drive(new ChassisSpeeds(-0.4, 0, 0));
                 startTime = Timer.getFPGATimestamp();

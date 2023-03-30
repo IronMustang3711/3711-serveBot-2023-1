@@ -50,7 +50,7 @@ public class Drive2Post extends CommandBase {
     if (postLevel == 2)
       finalArea = 1.8;  // if targetting mid level post
     else
-      finalArea = 2.0;  // otherwise targetting level 3 post
+      finalArea = 2.3;  // otherwise targetting level 3 post
     stage = 0;;
     SmartDashboard.putNumber("final area", finalArea);
   }
@@ -97,20 +97,20 @@ public class Drive2Post extends CommandBase {
           break;
 
         case 2: // Open clamp
-          if ((Timer.getFPGATimestamp() - startTime) < .6) {
-            m_clamp.drive(-0.7); // open clamp, drop it
+          if ((Timer.getFPGATimestamp() - startTime) < .3) {
+            m_clamp.drive(-0.6); // open clamp, drop it
           } else { // dropped, backup
             stage = 3;
-            m_drivetrainSubsystem.drive(new ChassisSpeeds(-0.4, 0, 0));
+            m_drivetrainSubsystem.drive(new ChassisSpeeds(-0.6, 0, 0));
             startTime = Timer.getFPGATimestamp(); // start timer
             m_clamp.drive(0);
           }
           break;
 
         case 3: // now backup
-          if ((Timer.getFPGATimestamp() - startTime) < .3) {
-            m_drivetrainSubsystem.drive(new ChassisSpeeds(-0.4, 0, 0));
-            
+          if ((Timer.getFPGATimestamp() - startTime) < .6) {
+            m_drivetrainSubsystem.drive(new ChassisSpeeds(-0.6, 0, 0));
+            m_clamp.drive(0);
           } else { // should be clear stop
             stage = 10; // may want to do auto stow sometime.
             m_drivetrainSubsystem.drive(new ChassisSpeeds(0.0, 0, 0));

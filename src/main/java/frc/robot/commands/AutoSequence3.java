@@ -37,7 +37,7 @@ public class AutoSequence3 extends SequentialCommandGroup {
       
       new ParallelCommandGroup(
         new StowArms(armSystem),
-        new CrossRamp( m_drivetrainSubsystem ).withTimeout(9.0)) // give it 9 seconds <<<<<<<<<<<<<<     
+        new CrossRamp( m_drivetrainSubsystem ).withTimeout(10.0)) // give it 9 seconds <<<<<<<<<<<<<<     
 
      )
     );

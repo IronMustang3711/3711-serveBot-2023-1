@@ -55,7 +55,7 @@ public class Drive2Cone2 extends CommandBase {
           double yaw = target.getYaw();
           SmartDashboard.putNumber("Target Yaw", yaw);
           // since camera is off center and angled, yaw needs a 15 degree correction
-          turnDrive = -(yaw - 15) / 50; // this is the proportional constant
+          turnDrive = -(yaw - 5) / 10; // this is the proportional constant
           if (turnDrive > turnLimit)// limit the drive to +/- 0.5
             turnDrive = turnLimit;
           else if (turnDrive < -turnLimit) {
@@ -63,7 +63,7 @@ public class Drive2Cone2 extends CommandBase {
           }
 
     
-          if (target.getArea() < 4) { // close if cone is 5% of view
+          if (target.getArea() < 3.5) { // close if cone is 5% of view
             // keep steering toward cone
             m_drivetrainSubsystem.drive(new ChassisSpeeds(0.9, 0, turnDrive));
           } else {
@@ -77,7 +77,7 @@ public class Drive2Cone2 extends CommandBase {
 
       case 1: // getting close
         // slow and straight for .7 seconds
-        if ((Timer.getFPGATimestamp() - startTime) < .7) {
+        if ((Timer.getFPGATimestamp() - startTime) < .9) {
           m_drivetrainSubsystem.drive(new ChassisSpeeds(0.35, 0, 0));
         } else { // hopefully ready to clamp. Stop drive
           m_clamp.drive(0.7); // clamp it
@@ -89,7 +89,7 @@ public class Drive2Cone2 extends CommandBase {
 
       case 2:  // ready to clamp
         if ((Timer.getFPGATimestamp() - startTime) < .6) {
-          m_clamp.drive(0.7); // clamp it
+          m_clamp.drive(0.6); // clamp it
         } else { // got it clamped, backup
           m_clamp.drive(0.05); // hold clamp
           stage = 3;
@@ -112,7 +112,9 @@ public class Drive2Cone2 extends CommandBase {
 
   @Override
   public void end(boolean interrupted) { // stop drive
+
+
     m_drivetrainSubsystem.drive(new ChassisSpeeds(0.0, 0.0, 0.0));
-    m_clamp.drive(0.05);
+    //m_clamp.drive(0.1);
   }
 }

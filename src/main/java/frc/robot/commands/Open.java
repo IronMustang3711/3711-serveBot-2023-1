@@ -55,7 +55,7 @@ public class Open extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        m_clamp.drive(-0.7);
+        m_clamp.drive(-0.5);
     }
 
     // Called once the command ends or is interrupted.
