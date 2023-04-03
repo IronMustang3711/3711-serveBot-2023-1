@@ -55,7 +55,7 @@ public class Drive2Cube2 extends CommandBase {
           double yaw = target.getYaw();
           SmartDashboard.putNumber("Target Yaw", yaw);
           // since camera is off center and angled, yaw needs a 15 degree correction
-          turnDrive = -(yaw - 15) / 50; // this is the proportional constant
+          turnDrive = -(yaw - 5) / 10; // this is the proportional constant
           if (turnDrive > turnLimit)// limit the drive to +/- 0.5
             turnDrive = turnLimit;
           else if (turnDrive < -turnLimit) {
@@ -65,7 +65,7 @@ public class Drive2Cube2 extends CommandBase {
     
           if (target.getArea() < 2) { // close if cube is 10% of view
             // keep steering toward cone
-            m_drivetrainSubsystem.drive(new ChassisSpeeds(0.9, 0, turnDrive));
+            m_drivetrainSubsystem.drive(new ChassisSpeeds(0.6, 0, turnDrive));
           } else {
             stage = 1;  // ok we are close, slow down
             startTime = Timer.getFPGATimestamp(); // start timer
@@ -77,7 +77,7 @@ public class Drive2Cube2 extends CommandBase {
 
       case 1: // getting close
         // slow and straight for .7 seconds
-        if ((Timer.getFPGATimestamp() - startTime) < .9) {
+        if ((Timer.getFPGATimestamp() - startTime) < 1.2) {
           m_drivetrainSubsystem.drive(new ChassisSpeeds(0.35, 0, 0));
         } else { // hopefully ready to clamp. Stop drive
           m_clamp.drive(0.7); // clamp it
