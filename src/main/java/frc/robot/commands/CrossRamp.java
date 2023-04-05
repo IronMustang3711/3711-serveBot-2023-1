@@ -47,14 +47,19 @@ public class CrossRamp extends CommandBase {
         switch(stage){
 
         case 0:  // approach ramp
-            if ( (pitch > 10) ||
-            ((Timer.getFPGATimestamp() - startTime) > 2.0)) 
-            { // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-                stage = 1; // on ramp, keep going
- //               m_drivetrainSubsystem.drive(new ChassisSpeeds(-.7, 0.0, 0.0)); // slow down
-                startTime = Timer.getFPGATimestamp();
-            }
-            break;
+        if (pitch > 10) 
+       { // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+            stage = 1; // on ramp, keep going
+            startTime = Timer.getFPGATimestamp();
+        }
+
+        if ( (Timer.getFPGATimestamp() - startTime) > 3.0)   // <<<< set time to exit community
+        { 
+            stage = 10; // did not find ramp, must be exiting community, stop drive
+            m_drivetrainSubsystem.drive(new ChassisSpeeds(0.0, 0.0, 0.0)); // slow down
+            startTime = Timer.getFPGATimestamp();
+        }
+    break;
 
         case 1: // climbing ramp, detect ramp drop
             if ((pitch < -5) || // decending ramp Slow a little
