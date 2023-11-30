@@ -32,7 +32,7 @@ public class CrossRamp extends CommandBase {
         stage = 0;
         peakPitch = 0;
         startTime = Timer.getFPGATimestamp();
-        m_drivetrainSubsystem.drive(new ChassisSpeeds(-1.0, 0, 0));
+        m_drivetrainSubsystem.drive(new ChassisSpeeds(-1.5, 0, 0));
     }
   
     @Override
@@ -87,7 +87,7 @@ public class CrossRamp extends CommandBase {
             if ((Timer.getFPGATimestamp() - startTime) > 0.6) // wait time to exit community <<<<<<<<<<<<<<<<<<
             { // reverse and go back up the platform
                 stage = 4;
-                m_drivetrainSubsystem.drive(new ChassisSpeeds(1.0, 0.0, 0.0)); // slow down
+                m_drivetrainSubsystem.drive(new ChassisSpeeds(1.3, 0.0, 0.0)); // slow down
                 startTime = Timer.getFPGATimestamp();
             }
             break;
@@ -97,7 +97,7 @@ public class CrossRamp extends CommandBase {
             ((Timer.getFPGATimestamp() - startTime) > 4.0)) 
             {             
                 stage = 5; // on ramp, keep going
-                m_drivetrainSubsystem.drive(new ChassisSpeeds(0.5, 0.0, 0.0)); // slow down
+                m_drivetrainSubsystem.drive(new ChassisSpeeds(0.6, 0.0, 0.0)); // slow down
                 startTime = Timer.getFPGATimestamp();
             }
             break;
@@ -107,13 +107,13 @@ public class CrossRamp extends CommandBase {
             if ((pitch > -7) || // pitch is dropping <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
                     ((Timer.getFPGATimestamp() - startTime) > 4.0)) {
                 stage = 6; // on platform, reverse a little bit.
-                m_drivetrainSubsystem.drive(new ChassisSpeeds(-0.4, 0, 0));
+                m_drivetrainSubsystem.drive(new ChassisSpeeds(-0.6, 0, 0));
                 startTime = Timer.getFPGATimestamp();
             }
             break;
 
         case 6: // backup a little to balance platform
-            if ((Timer.getFPGATimestamp() - startTime) > 0.25) // stop after timeout of .3 seconds <<<<<<<<<<<<<<<<<<
+            if ((Timer.getFPGATimestamp() - startTime) > 0.65) // stop after timeout of .3 seconds <<<<<<<<<<<<<<<<<<
             {
                 stage = 7; // cock wheels and wait for platform to settle
                 m_drivetrainSubsystem.drive(new ChassisSpeeds(0, 0.02, 0.0));

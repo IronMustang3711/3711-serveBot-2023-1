@@ -29,7 +29,7 @@ public class Drive2Post extends CommandBase {
   double m_fwdLimit = 0.3; // may be parameter later...........
   int stage = 0;
   int postLevel = 0;
-  double finalArea = 3;  
+  double finalArea = 5;  
 
   public Drive2Post(DrivetrainSubsystem drivetrainSubsystem, Clamp clampSubsystem, Arms armsSubsystem) {
 
@@ -50,7 +50,7 @@ public class Drive2Post extends CommandBase {
     if (postLevel == 2)
       finalArea = 1.8;  // if targetting mid level post
     else
-      finalArea = 2.3;  // otherwise targetting level 3 post
+      finalArea = 2.9;  // otherwise targetting level 3 post
     stage = 0;;
     SmartDashboard.putNumber("final area", finalArea);
   }
@@ -70,7 +70,7 @@ public class Drive2Post extends CommandBase {
 
       SmartDashboard.putNumber("Target Yaw", yaw);
 
-      turnDrive = -yaw / 50; // this is the proportional constant
+      turnDrive = (-yaw + 5) / 50; // this is the proportional constant
       if (turnDrive > turnLimit)// limit the drive to +/- 0.5
         turnDrive = turnLimit;
       else if (turnDrive < -turnLimit) {
@@ -81,7 +81,7 @@ public class Drive2Post extends CommandBase {
     switch (stage) {
       case 0:
         if (area > 0) { // do we have the target?
-          if (area < 1) { // close if post reflector is small 1.% of view <<<<<<<<<<<<<<<<<<<<
+          if (area < 1.3) { // close if post reflector is small 1.% of view <<<<<<<<<<<<<<<<<<<<
             // keep steering toward post
             m_drivetrainSubsystem.drive(new ChassisSpeeds(0.4, turnDrive, 0));
           } else { // ok we are close, slow down
